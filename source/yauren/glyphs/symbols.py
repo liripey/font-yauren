@@ -195,32 +195,35 @@ def infinity(g, P, cx, ya, a, t):
         g.add(stk(p, pen))
 
 
-@math_glyph("percent", 0x0025)
-def percent(g, P, cx, ya, a, t):
-    pc = Pen(P.curve * 0.30, P.hair * 0.48, P.ang)
-    rx, ry = a * 0.36, P.cap * 0.20
-    for (ox, oy) in ((cx - a * 0.55, P.cap - ry), (cx + a * 0.55, ry)):
+def pct_ovals(P, n):
+    """Sinais de porcentagem/permilagem: n ovais + barra."""
+    S, H, cap = P.stem, P.hair, P.cap
+    pc = Pen((H * 0.95 + S * 0.20) / 2, H * 0.48, P.ang)
+    ry = cap * 0.205 + S * 0.05
+    rx = P.cn * 0.19 + S * 0.42
+    gap = P.cn * 0.12 + S * 0.15
+    out = []
+    xs = [rx, 3 * rx + gap] + ([5 * rx + gap + max(24, S * 0.35)] if n == 3 else [])
+    ys = [cap - ry, ry] + ([ry] if n == 3 else [])
+    for ox, oy in zip(xs, ys):
         p = Path(ox + rx - pc.hh, oy, d=90).c(ox, oy + ry - pc.hv, d=180)
         p.c(ox - rx + pc.hh, oy, d=270).c(ox, oy - ry + pc.hv, d=0).close("c")
-        g.add(stk(p, pc))
-    g.add(stk(Path(cx + a * 0.80, P.cap + 4).l(cx - a * 0.80, -4),
-              Pen(P.hair * 0.75 + P.stem * 0.06, P.hair * 0.5)))
+        out += stk(p, pc)
+    x0, x1 = rx * 0.6, 3 * rx + gap - rx * 0.6
+    out += stk(Path(x0, -6).l(x1 + rx * 0.2, cap + 6), Pen(H * 0.78 + S * 0.10, H * 0.5))
+    return out
+
+
+@glyph("percent", 0x0025)
+def percent(g, P):
+    g.add(pct_ovals(P, 2))
+    g.space(P.sb * 1.1, P.sb * 1.1)
 
 
 @glyph("perthousand", 0x2030)
 def perthousand(g, P):
-    a = span(P) / 2
-    cx = a * 1.1
-    pc = Pen(P.curve * 0.28, P.hair * 0.46, P.ang)
-    rx, ry = a * 0.34, P.cap * 0.19
-    centers = [(cx - a * 0.55, P.cap - ry), (cx + a * 0.55, ry), (cx + a * 0.55 + 2 * rx + 30, ry)]
-    for (ox, oy) in centers:
-        p = Path(ox + rx - pc.hh, oy, d=90).c(ox, oy + ry - pc.hv, d=180)
-        p.c(ox - rx + pc.hh, oy, d=270).c(ox, oy - ry + pc.hv, d=0).close("c")
-        g.add(stk(p, pc))
-    g.add(stk(Path(cx + a * 0.80, P.cap + 4).l(cx - a * 0.80, -4),
-              Pen(P.hair * 0.75 + P.stem * 0.06, P.hair * 0.5)))
-    g.space(P.sb, P.sb)
+    g.add(pct_ovals(P, 3))
+    g.space(P.sb * 1.1, P.sb * 1.1)
 
 
 # ------------------------------------------------------------- operadores grandes
@@ -558,8 +561,8 @@ def numero(g, P):
 @glyph("section", 0x00A7)
 def section(g, P):
     S, H, cap = P.stem, P.hair, P.cap
-    pen = Pen(P.curve / 2 * 0.86, H / 2, P.ang)
-    W = P.cn * 0.82 + P.curve
+    pen = Pen(P.curve / 2 * (0.84 - 0.18 * P.wf), H / 2, P.ang)
+    W = P.cn * 0.82 + P.curve * 1.15
     top, bot = cap + P.os, -P.os - 110
     hgt = top - bot
     we = 0.6
@@ -599,9 +602,9 @@ def paragraph(g, P):
 @glyph("at", 0x0040)
 def at(g, P):
     S, H, cap = P.stem, P.hair, P.cap
-    R = cap * 0.56
+    R = cap * 0.56 + S * 0.15
     cx, cy = R, cap * 0.40
-    pen = Pen(P.curve * 0.30, H * 0.55, P.ang)
+    pen = Pen(P.curve * 0.30 * (1 - 0.30 * P.wf), H * 0.55, P.ang)
     # anel externo aberto
     p = Path(cx + R * 0.62, cy - R * 0.62, d=-30, w=0.8)
     p.c(cx + R - pen.hh, cy + R * 0.05, d=90, w=1.0)
@@ -612,13 +615,13 @@ def at(g, P):
     g.add(stk(p, pen))
     # 'a' interno (bojo + haste)
     ri = R * 0.42
-    pi_ = Pen(P.curve * 0.36, H * 0.5, P.ang)
+    pi_ = Pen(P.curve * 0.36 * (1 - 0.25 * P.wf), H * 0.5, P.ang)
     xi = cx - R * 0.04
     q = Path(xi + ri - pi_.hh, cy + 6, d=90).c(xi, cy + ri - pi_.hv, d=180)
     q.c(xi - ri + pi_.hh, cy, d=270).c(xi, cy - ri + pi_.hv, d=0).close("c")
     g.add(stk(q, pi_))
     xs = xi + ri - S * 0.36
-    sp = Pen(S * 0.38, H * 0.5)
+    sp = Pen(S * 0.38 * (1 - 0.25 * P.wf), H * 0.5)
     r = Path(xs + S * 0.36, cy + ri, d=270).l(xs + S * 0.36, cy - ri * 0.55)
     r.c(xs + S * 0.36 + R * 0.25, cy - ri * 0.95, d=0, w=1.0)
     r.c(cx + R * 0.66, cy - R * 0.05, d=80, w=0.7)

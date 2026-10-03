@@ -262,3 +262,76 @@ def _make_spacing(src):
 
 for name, (uni, src) in SPACING.items():
     glyph(name, uni)(_make_spacing(src))
+
+
+# ------------------------------------------------------------- marcas inferiores extras
+
+def _below(fn_top, case=False, gap=70):
+    """Converte uma forma de marca superior em inferior (topo em -gap)."""
+    def fn(m):
+        sh, _ = fn_top(m)
+        b = contours_bounds(sh)
+        return transform_contours(sh, dy=-gap - b[3]), None
+    return fn
+
+
+EXTRA_BOTTOM = {
+    "dieresisbelowcomb": (0x0324, _below(f_dieresis)),
+    "ringbelowcomb": (0x0325, _below(f_ring)),
+    "circumflexbelowcomb": (0x032D, _below(lambda m: f_circumflex(m))),
+    "brevebelowcomb": (0x032E, _below(f_breve)),
+    "brevinvertedbelowcomb": (0x032F, _below(
+        lambda m: (transform_contours(f_breve(m)[0], 1, 0, 0, -1, 0, 2 * m.y0 + m.hu * 0.62), None))),
+    "tildebelowcomb": (0x0330, _below(f_tilde)),
+    "macronbelowcomb": (0x0331, _below(f_macron)),
+    "minusbelowcomb": (0x0320, _below(lambda m: (rect(m.cx - m.hu * 0.45, m.y0, m.cx + m.hu * 0.45,
+                                                       m.y0 + m.H * 1.28), None))),
+}
+
+
+def _mk_bottom(fn):
+    def g_fn(g, P):
+        m = M(P, False)
+        sh, _ = fn(m)
+        g.add(sh)
+        g.anchor("_bottom", m.cx, 0)
+        g.space(width=0)
+    return g_fn
+
+
+for _name, (_uni, _fn) in EXTRA_BOTTOM.items():
+    glyph(_name, _uni)(_mk_bottom(_fn))
+
+
+# ------------------------------------------------------------- letras modificadoras
+
+@glyph("apostrophemod", 0x02BC)
+def apostrophemod(g, P):
+    from .punct import qright
+    g.add(qright(P))
+    g.space(P.sb * 1.4, P.sb * 1.4)
+
+
+@glyph("commaturnedmod", 0x02BB)
+def commaturnedmod(g, P):
+    from .punct import qleft
+    g.add(qleft(P))
+    g.space(P.sb * 1.4, P.sb * 1.4)
+
+
+@glyph("glottalstop", 0x0294)
+def glottalstop(g, P):
+    from .punct import question_shapes
+    S, H, cap = P.stem, P.hair, P.cap
+    pl = Pen(S / 2, H / 2)
+    W = P.cn * 0.80 + S * 1.1
+    p = Path(S * 0.45, cap * 0.80, d=80, w=0.75)
+    p.c(W * 0.50, cap + P.os - pl.hv, d=0, w=1.0)
+    p.c(W - pl.hh, cap * 0.74, d=270, w=1.0)
+    p.c(W * 0.52, cap * 0.45, d=225, w=0.95)
+    p.c(W * 0.46, cap * 0.28, d=270, w=1.0)
+    p.l(W * 0.46, 0)
+    g.add(stk(p, pl))
+    from ..parts import foot_serif
+    g.add(foot_serif(P, W * 0.46 - S / 2, W * 0.46 + S / 2, 0))
+    g.space(P.sb, P.sb)

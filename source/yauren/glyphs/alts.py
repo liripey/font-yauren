@@ -55,14 +55,23 @@ def fi(g, P):
 
 @glyph("fl", 0xFB02)
 def fl(g, P):
-    f, _ = borrow("f", P)
-    l, _ = borrow("l", P)
-    S = P.stem
-    fb = contours_bounds(f)
-    xl = fb[2] - S * 0.15
-    g.add(f)
-    g.add(transform_contours(l, dx=xl))
+    """fl clássico: o arco do f desce como haste do l."""
+    from ..pen import Path, Pen, stroke
+    from ..parts import foot_serif
+    S, H, xh, asc = P.stem, P.hair, P.xh, P.asc
+    pl = Pen(S / 2, H / 2)
+    x0 = S * 0.60
+    LC.stem(g, P, x0, 0, xh, head=False, foot="both", er=P.sfx * 1.0)
+    xl = x0 + S + P.cn * 0.66
+    top = asc + P.os * 0.5
+    p = Path(x0 + S / 2, xh - 10, d=90)
+    p.l(x0 + S / 2, asc - (asc - xh) * 0.55)
+    p.c((x0 + S / 2 + xl + S / 2) / 2, top - pl.hv, d=0, w=1.0)
+    p.c(xl + S / 2, asc - (asc - xh) * 0.55, d=270, w=1.0)
+    p.l(xl + S / 2, P.sft)
+    g.add(stroke(p, pl))
+    g.add(foot_serif(P, xl, xl + S, 0))
     bt = P.hair * 1.12
-    g.add(rect(S * 0.6 + S, P.xh - bt, xl + S * 0.5, P.xh))
+    g.add(rect(0, xh - bt, x0 + S + P.cn * 0.40, xh))
     LC.anchors_lc(g, xl + S / 2, P=P)
     g.space(P.sb * 0.6, P.sb)

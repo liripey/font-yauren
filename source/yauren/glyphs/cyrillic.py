@@ -74,6 +74,8 @@ COPIES = [
     ("uni0445", 0x0445, "x"), ("uni0455", 0x0455, "s"), ("uni0456", 0x0456, "i"),
     ("uni0458", 0x0458, "j"), ("uni043A", 0x043A, "kgreenlandic"),
     ("uni0413", 0x0413, "Gamma"), ("uni041F", 0x041F, "Pi"), ("uni0424", 0x0424, "Phi"),
+    ("uni04D8", 0x04D8, "Schwa"), ("uni04D9", 0x04D9, "schwa"), ("uni04AE", 0x04AE, "Y"),
+    ("uni04BB", 0x04BB, "h"),
 ]
 for _n, _u, _s in COPIES:
     glyph(_n, _u)(_copy(_s))
@@ -638,3 +640,111 @@ for _n, _u, _b, _m in [
         ("uni040D", 0x040D, "uni0418", ["gravecomb.case"]),
         ("uni045D", 0x045D, "uni0438", ["gravecomb"])]:
     composite(_n, _u, _b, _m)
+
+
+# ------------------------------------------------------------- cirílico estendido
+# (cazaque, tártaro, bashkir, quirguiz, mongol, uzbeque cirílico)
+
+def _with(src, extra, small=False, k=0.84):
+    def fn(g, P):
+        Q = smallcap(P, k) if small else P
+        c, t = borrow(src, Q) if not small or src in GLYPHS and src[0].isupper() else borrow(src, P)
+        g.add(c)
+        b = contours_bounds(c)
+        extra(g, Q, b)
+        g.space(t.lsb if t.lsb is not None else Q.sbC, t.rsb if t.rsb is not None else Q.sbC)
+    return fn
+
+
+def _bar(k_y=0.45, x0f=None, x1f=None):
+    def fn(g, P, b):
+        t = UC.arm_t(P, 0.95)
+        y = P.cap * k_y
+        S = P.stemC
+        g.add(rect(b[0] + (x0f(P, b) if x0f else -S * 0.3 + P.sfxC),
+                   y - t / 2, b[0] + (x1f(P, b) if x1f else S * 1.9 + P.sfxC), y + t / 2))
+    return fn
+
+
+def _tab_right(off=0.0):
+    def fn(g, P, b):
+        S = P.stemC
+        x1 = b[2] - off
+        g.add(rect(x1 - S * 0.5, 0, x1, UC.arm_t(P, 1.0)))
+        desc_tab(g, P, x1 - S * 0.42, x1)
+    return fn
+
+
+# Ғ ғ
+glyph("uni0492", 0x0492)(_with("Gamma", _bar(0.45)))
+glyph("uni0493", 0x0493)(_with("Gamma", _bar(0.45), small=True))
+# Қ қ  (rabicho na perna do К)
+glyph("uni049A", 0x049A)(_with("K", _tab_right(0)))
+glyph("uni049B", 0x049B)(_with("K", _tab_right(0), small=True, k=0.80))
+# Ң ң
+glyph("uni04A2", 0x04A2)(_with("H", _tab_right(0)))
+glyph("uni04A3", 0x04A3)(_with("H", _tab_right(0), small=True))
+# Җ җ
+glyph("uni0496", 0x0496)(_with("uni0416", _tab_right(0)))
+glyph("uni0497", 0x0497)(_with("uni0416", _tab_right(0), small=True))
+
+
+def _obar(g, P, b):
+    t = UC.arm_t(P, 1.0)
+    C = P.curveC
+    g.add(rect(b[0] + C * 0.5, P.cap * 0.5 - t / 2, b[2] - C * 0.5, P.cap * 0.5 + t / 2))
+
+
+# Ө ө
+glyph("uni04E8", 0x04E8)(_with("O", _obar))
+
+
+@glyph("uni04E9", 0x04E9)
+def obar_lc(g, P):
+    c, t = borrow("o", P)
+    b = contours_bounds(c)
+    g.add(c)
+    tt = P.hair * 1.15
+    g.add(rect(b[0] + P.curve * 0.5, P.xh * 0.5 - tt / 2, b[2] - P.curve * 0.5, P.xh * 0.5 + tt / 2))
+    g.space(P.rnd, P.rnd)
+
+
+@glyph("uni04AF", 0x04AF)
+def ue_straight(g, P):
+    """ү: Y reduzido cuja haste desce abaixo da linha de base."""
+    Q = smallcap(P, 0.86)
+    dd = -P.desc * 0.80
+    Q.cap = P.xh + dd
+    c, t = borrow("Y", Q)
+    g.add(transform_contours(c, dy=-dd))
+    g.space(P.sb * 0.45, P.sb * 0.45)
+
+
+# Ұ ұ
+glyph("uni04B0", 0x04B0)(_with("Y", lambda g, P, b: g.add(rect(
+    (b[0] + b[2]) / 2 - P.stemC * 1.4, P.cap * 0.32 - UC.arm_t(P) / 2,
+    (b[0] + b[2]) / 2 + P.stemC * 1.4, P.cap * 0.32 + UC.arm_t(P) / 2))))
+
+
+@glyph("uni04B1", 0x04B1)
+def ue_bar(g, P):
+    ue_straight(g, P)
+    c = g.adds[-1]
+    b = contours_bounds(c)
+    t = P.hair * 1.15
+    cx = (b[0] + b[2]) / 2
+    g.add(rect(cx - P.stem * 1.3, -P.desc * 0.0 - t / 2 - 10, cx + P.stem * 1.3, -10 + t / 2))
+
+
+@glyph("uni04BA", 0x04BA)
+def Shha(g, P):
+    Q = P.copy()
+    Q.asc = P.cap
+    Q.xh = P.cap * 0.64
+    Q.stem = P.stemC
+    Q.hair = P.hairC
+    Q.cn = P.cn * 1.25
+    Q.sfx = P.sfxC
+    Q.sb = P.sbC
+    LC.h(g, Q)
+    UC.anchors_uc(g, P, (Q.stem * 2 + Q.cn) / 2)
