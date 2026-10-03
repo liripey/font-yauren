@@ -580,7 +580,7 @@ def y(g, P):
     g.add(clip(stk(p, pt), rect(-2000, xh, 4000, xh + 400)))
     g.add(drop(P, rb * 0.95 - S * 0.4, d - P.os + rb * 1.06, rb))
     g.add(foot_serif(P, W - thin, W, xh, el=ei, er=ex, flip=True, sl=sr, sr=sr))
-    anchors_lc(g, xa, P=P)
+    anchors_lc(g, xa, P=P, bottom_x=xa + S * 1.1)
     g.space(P.sb * 0.45, P.sb * 0.45)
 
 
