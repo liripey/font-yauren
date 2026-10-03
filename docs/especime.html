@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Yauren — Espécime</title>
+<link rel="stylesheet" href="../fonts/webfonts/yauren.css">
+<style>
+  :root {
+    --paper: #faf8f3; --ink: #181c26; --muted: #7a7a7a; --accent: #785628; --line: #e4dfd4;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) { --paper: #15171c; --ink: #ece8df; --muted: #9a978f; --accent: #d1a866; --line: #2c2f36; }
+  }
+  :root[data-theme="dark"] { --paper: #15171c; --ink: #ece8df; --muted: #9a978f; --accent: #d1a866; --line: #2c2f36; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font-family: "Yauren", Georgia, serif;
+         font-weight: 400; line-height: 1.55; }
+  main { max-width: 1120px; margin: 0 auto; padding: 48px 16px 96px; }
+  .label { font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent);
+           font-feature-settings: "case" 1; margin: 0 0 8px; }
+  section { border-top: 1px solid var(--line); padding: 40px 0; }
+  h1 { font-weight: 300; font-size: clamp(72px, 16vw, 200px); line-height: .95; margin: 8px 0 24px; letter-spacing: -.01em; }
+  .lead { font-size: clamp(20px, 3vw, 30px); max-width: 30em; margin: 0; }
+  .sub { color: var(--muted); font-weight: 300; font-size: clamp(17px, 2.2vw, 22px); }
+  .weights div { display: flex; align-items: baseline; gap: 20px; flex-wrap: wrap; padding: 6px 0; }
+  .weights span.w { width: 110px; flex: none; font-size: 13px; color: var(--muted); letter-spacing: .04em; }
+  .weights span.s { font-size: clamp(26px, 4.4vw, 46px); }
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+  @media (max-width: 760px) { .cols { grid-template-columns: 1fr; } }
+  .t17 { font-size: 17px; } .t21 { font-size: 21px; line-height: 1.5; }
+  .glyphs { font-size: clamp(26px, 4vw, 40px); line-height: 1.35; word-break: break-all; }
+  .feat { display: grid; grid-template-columns: 220px 1fr; gap: 6px 24px; align-items: baseline; }
+  @media (max-width: 760px) { .feat { grid-template-columns: 1fr; } }
+  .feat code { font-family: ui-monospace, monospace; font-size: 13px; color: var(--muted); }
+  .feat span { font-size: clamp(22px, 3.4vw, 32px); }
+  .controls { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; margin-bottom: 16px; font-size: 15px; }
+  .controls input[type=range] { width: 180px; }
+  #tester { width: 100%; min-height: 3em; font-family: inherit; font-size: 40px; color: var(--ink);
+            background: transparent; border: 1px dashed var(--line); padding: 12px; outline: none; }
+  footer { color: var(--muted); font-size: 14px; border-top: 1px solid var(--line); padding-top: 24px; }
+  button.theme { font: inherit; font-size: 13px; background: none; color: var(--muted); border: 1px solid var(--line);
+                 padding: 4px 10px; cursor: pointer; float: right; }
+</style>
+</head>
+<body>
+<main>
+  <button class="theme" id="theme">claro / escuro</button>
+  <p class="label">Família tipográfica exclusiva · 7 pesos · OTF</p>
+  <h1>Yauren</h1>
+  <p class="lead">Serifada humanista para ciência, leitura e precisão.</p>
+  <p class="sub">Garamond na elegância, Georgia na robustez, Lexend Deca na clareza.</p>
+
+  <section class="weights">
+    <p class="label">Pesos</p>
+    <div style="font-weight:300"><span class="w">300 Light</span><span class="s">Pesquisa &amp; Precisão — 2026</span></div>
+    <div style="font-weight:400"><span class="w">400 Regular</span><span class="s">Pesquisa &amp; Precisão — 2026</span></div>
+    <div style="font-weight:500"><span class="w">500 Medium</span><span class="s">Pesquisa &amp; Precisão — 2026</span></div>
+    <div style="font-weight:600"><span class="w">600 SemiBold</span><span class="s">Pesquisa &amp; Precisão — 2026</span></div>
+    <div style="font-weight:700"><span class="w">700 Bold</span><span class="s">Pesquisa &amp; Precisão — 2026</span></div>
+    <div style="font-weight:800"><span class="w">800 ExtraBold</span><span class="s">Pesquisa &amp; Precisão — 2026</span></div>
+    <div style="font-weight:900"><span class="w">900 Black</span><span class="s">Pesquisa &amp; Precisão — 2026</span></div>
+  </section>
+
+  <section>
+    <p class="label">Teste livre</p>
+    <div class="controls">
+      <label>Peso <input type="range" id="w" min="300" max="900" step="100" value="400"></label>
+      <label>Corpo <input type="range" id="s" min="12" max="120" value="40"></label>
+      <label><input type="checkbox" id="tnum"> tnum</label>
+      <label><input type="checkbox" id="onum"> onum</label>
+      <label><input type="checkbox" id="zero"> zero</label>
+      <label><input type="checkbox" id="frac"> frac</label>
+    </div>
+    <div id="tester" contenteditable="true" spellcheck="false">Ação, ciência &amp; informação: 0,25 µg/mL ± 3% · 1/2</div>
+  </section>
+
+  <section class="cols">
+    <div>
+      <p class="label">Texto corrido · 21 px</p>
+      <p class="t21">A Yauren nasceu para dar voz a um laboratório de pesquisa: relatórios, artigos, rótulos
+      de amostras e apresentações precisam ser lidos com rapidez e sem ambiguidade. Por isso a família combina
+      a elegância das garaldes com uma altura-x generosa, aberturas amplas e espaçamento confortável.</p>
+    </div>
+    <div>
+      <p class="label">Texto corrido · 17 px</p>
+      <p class="t17">Ação, função, coração e informação: os acentos do português foram desenhados com o mesmo
+      cuidado que as letras, e o kerning é calculado também para cada caractere acentuado. Tabelas usam
+      algarismos tabulares; fórmulas, sobrescritos e subscritos verdadeiros: m², H₂O, CO₂, 10⁻³.</p>
+      <p class="t17"><b>Resultados.</b> A média foi de 12,5 ± 0,4 mg (n = 48; p &lt; 0,05). O desvio-padrão
+      relativo ficou abaixo de 3% em todas as séries.</p>
+    </div>
+  </section>
+
+  <section>
+    <p class="label">Recursos OpenType</p>
+    <div class="feat">
+      <code>padrão</code><span>Lote 1.234.567 — 0,0168 mg</span>
+      <code>tnum · tabulares</code><span style="font-variant-numeric: tabular-nums">Lote 1.234.567 — 0,0168 mg</span>
+      <code>onum · estilo antigo</code><span style="font-variant-numeric: oldstyle-nums">Lote 1.234.567 — 0,0168 mg</span>
+      <code>zero · cortado</code><span style="font-variant-numeric: slashed-zero">ID 0O0-1010-OO8</span>
+      <code>frac · frações</code><span style="font-variant-numeric: diagonal-fractions">1/2 · 3/4 · 15/16</span>
+      <code>sups / subs</code><span>m<sup style="font-variant-position: super; vertical-align: baseline; font-size: 1em">2</sup> · H<sub style="font-variant-position: sub; vertical-align: baseline; font-size: 1em">2</sub>O</span>
+      <code>ordn · ordinais</code><span style="font-variant-numeric: ordinal">1a 2o 3a 10o</span>
+      <code>case · caixa-alta</code><span style="font-feature-settings: 'case' 1">(ATENÇÃO) — «NOVO» [LAB-01]</span>
+      <code>liga · ligaduras</code><span>fluxo · filtro · fiel · flor</span>
+    </div>
+  </section>
+
+  <section>
+    <p class="label">Idiomas e escritas</p>
+    <p class="t21">Português: Ação, coração, órgão, pôr, à luz — 1ª 2º<br>
+    Español · Français · Deutsch: ¿Qué año? Où êtes-vous? Größe, Fußgänger<br>
+    Polski · Čeština · Türkçe · Română: Łódź, Příliš, Iğdır, ştiinţă → știință<br>
+    Tiếng Việt: Người ấy ở đâu? Nghiên cứu khoa học.<br>
+    Ελληνικά: Επιστήμη και έρευνα · αβγδεζηθικλμνξοπρστυφχψω<br>
+    Русский · Українська · Қазақша: Научное исследование · Наукове дослідження · Ғылым<br>
+    Guarani · Hawaiʻi · Azərbaycan: Ñandeʼa ñeʼẽ · Hawaiʻi · Əlifba, şəhər</p>
+  </section>
+
+  <section>
+    <p class="label">Caracteres (amostra)</p>
+    <p class="glyphs">ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 0123456789
+    ÁÂÃÀÇÉÊÍÓÔÕÚÜ áâãàçéêíóôõúü ÆŒØßẞÐÞŁ æœøðþł
+    .,:;…!¡?¿·•‘’“”‚„«»‹›-–—()[]{}/\|@&amp;#*†‡§¶©®™°
+    +−×÷=≠≈&lt;&gt;≤≥±¬∞∂∆∏∑√∫µπΩ ←↑→↓↔ ½¼¾ %‰ R$ € £ ¥ ¢ №</p>
+  </section>
+
+  <footer>
+    Yauren 1.000 · © 2026 Yauren. Todos os direitos reservados. Fonte proprietária de uso exclusivo.
+  </footer>
+</main>
+<script>
+  const t = document.getElementById("tester");
+  const upd = () => {
+    t.style.fontWeight = document.getElementById("w").value;
+    t.style.fontSize = document.getElementById("s").value + "px";
+    const f = ["tnum", "onum", "zero", "frac"].filter(k => document.getElementById(k).checked)
+      .map(k => `"${k}" 1`);
+    t.style.fontFeatureSettings = f.length ? f.join(", ") : "normal";
+  };
+  document.querySelectorAll(".controls input").forEach(i => i.addEventListener("input", upd));
+  upd();
+  const root = document.documentElement;
+  document.getElementById("theme").addEventListener("click", () => {
+    const dark = root.dataset.theme ? root.dataset.theme === "dark"
+      : matchMedia("(prefers-color-scheme: dark)").matches;
+    root.dataset.theme = dark ? "light" : "dark";
+  });
+</script>
+</body>
+</html>

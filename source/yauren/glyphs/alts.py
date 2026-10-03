@@ -75,3 +75,12 @@ def fl(g, P):
     g.add(rect(0, xh - bt, x0 + S + P.cn * 0.40, xh))
     LC.anchors_lc(g, xl + S / 2, P=P)
     g.space(P.sb * 0.6, P.sb)
+
+
+@glyph("periodcentered.loclCAT")
+def periodcentered_cat(g, P):
+    """Ponto volante catalão (l·l): mais justo, centrado na altura-x."""
+    from .punct import dot, rdot
+    r = rdot(P) * 0.92
+    g.add(dot(r, P.xh * 0.55, r))
+    g.space(-P.sb * 0.55, -P.sb * 0.55)

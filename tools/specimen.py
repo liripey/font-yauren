@@ -205,7 +205,7 @@ def page_features():
     ]
     y = 110
     for lab, txt, feat in demos:
-        label(img, 110, y - 40, lab, 16, ACCENT)
+        label(img, 110, y - 58, lab, 16, ACCENT)
         if feat is None:
             x = R.draw(img, 110, y, "m", 50)
             x = R.draw(img, x, y, "2", 50, features={"sups": True})

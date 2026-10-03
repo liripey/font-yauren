@@ -1,0 +1,10 @@
+fonttools[woff]>=4.60
+skia-pathops>=0.9
+numpy>=1.26
+afdko>=4.0          # otfautohint (hinting CFF) e checkoutlinesufo (QA de contornos)
+# apenas para provas e QA
+freetype-py>=2.5
+uharfbuzz>=0.40
+Pillow>=10
+fontbakery>=0.13
+hyperglot>=0.7

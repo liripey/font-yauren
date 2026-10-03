@@ -81,9 +81,9 @@ def build_features(gl, P, kern=True):
         for a, b in pairs:
             if _has(gl, a, b):
                 out.append(f"    sub {a} by {b};")
-    if "periodcentered" in names and "ldot" in names:
+    if "periodcentered.loclCAT" in names:
         out.append("  script latn; language CAT exclude_dflt;")
-        out.append("    sub l periodcentered' l by periodcentered;")
+        out.append("    sub [l L] periodcentered' [l L] by periodcentered.loclCAT;")
     out.append("} locl;\n")
 
     # ---------------------------------------------------------------- figuras

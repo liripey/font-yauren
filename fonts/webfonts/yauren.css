@@ -1,0 +1,22 @@
+/* Yauren — família tipográfica exclusiva. Uso restrito à Yauren. */
+@font-face { font-family: "Yauren"; font-weight: 300; font-style: normal; font-display: swap;
+  src: url("Yauren-Light.woff2") format("woff2"); }
+@font-face { font-family: "Yauren"; font-weight: 400; font-style: normal; font-display: swap;
+  src: url("Yauren-Regular.woff2") format("woff2"); }
+@font-face { font-family: "Yauren"; font-weight: 500; font-style: normal; font-display: swap;
+  src: url("Yauren-Medium.woff2") format("woff2"); }
+@font-face { font-family: "Yauren"; font-weight: 600; font-style: normal; font-display: swap;
+  src: url("Yauren-SemiBold.woff2") format("woff2"); }
+@font-face { font-family: "Yauren"; font-weight: 700; font-style: normal; font-display: swap;
+  src: url("Yauren-Bold.woff2") format("woff2"); }
+@font-face { font-family: "Yauren"; font-weight: 800; font-style: normal; font-display: swap;
+  src: url("Yauren-ExtraBold.woff2") format("woff2"); }
+@font-face { font-family: "Yauren"; font-weight: 900; font-style: normal; font-display: swap;
+  src: url("Yauren-Black.woff2") format("woff2"); }
+
+/* Sugestões de uso
+   body   { font-family: "Yauren", Georgia, serif; font-weight: 400; line-height: 1.55; }
+   table  { font-variant-numeric: tabular-nums; }          (tnum)
+   .id    { font-feature-settings: "zero" 1; }              (zero cortado em códigos)
+   .caps  { font-feature-settings: "case" 1; text-transform: uppercase; letter-spacing: .04em; }
+*/
