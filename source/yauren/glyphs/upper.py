@@ -257,8 +257,9 @@ def C(g, P):
     # serifa vertical do terminal superior
     ts = pc.hh * we * 2
     hs = cap * 0.07 * (1 - 0.55 * P.wf)
-    g.add(quad((W - ts, cap * 0.72), (W, cap * 0.72), (W, cap * 0.72 - hs),
-               (W - ts * 0.3, cap * 0.72 - hs)))
+    if hs >= 18:  # nos pesos pesados o esporão vira ruído: omite
+        g.add(quad((W - ts, cap * 0.72), (W, cap * 0.72), (W, cap * 0.72 - hs),
+                   (W - ts * 0.3, cap * 0.72 - hs)))
     anchors_uc(g, P, W * 0.55)
     g.anchor("cedilla", W * 0.53, 0)
     g.space(P.rndC, P.rndC * 0.55)
@@ -282,8 +283,9 @@ def G(g, P):
     g.add(stk(p, Pen(pc.A, pc.B, P.ang)))
     ts = pc.hh * we * 2
     hs = cap * 0.07 * (1 - 0.55 * P.wf)
-    g.add(quad((W - ts, cap * 0.72), (W, cap * 0.72), (W, cap * 0.72 - hs),
-               (W - ts * 0.3, cap * 0.72 - hs)))
+    if hs >= 18:  # nos pesos pesados o esporão vira ruído: omite
+        g.add(quad((W - ts, cap * 0.72), (W, cap * 0.72), (W, cap * 0.72 - hs),
+                   (W - ts * 0.3, cap * 0.72 - hs)))
     # barra/serifa do queixo
     yb = cap * 0.42
     g.add(foot_serif(P, W - S, W, yb, el=P.cn * 0.30, er=P.sfxC * 0.4, caps=True, flip=True))
@@ -312,10 +314,11 @@ def S_(g, P):
     g.add(stk(p, pen))
     ts = pen.hh * we * 2
     hs = cap * 0.07 * (1 - 0.55 * P.wf)
-    g.add(quad((W - ts, cap * 0.70), (W, cap * 0.70), (W, cap * 0.70 - hs),
-               (W - ts * 0.3, cap * 0.70 - hs)))
-    g.add(quad((0, cap * 0.28), (ts, cap * 0.28), (ts * 0.3, cap * 0.28 + hs * 1.1),
-               (0, cap * 0.28 + hs * 1.1)))
+    if hs >= 18:  # nos pesos pesados o esporão vira ruído: omite
+        g.add(quad((W - ts, cap * 0.70), (W, cap * 0.70), (W, cap * 0.70 - hs),
+                   (W - ts * 0.3, cap * 0.70 - hs)))
+        g.add(quad((0, cap * 0.28), (ts, cap * 0.28), (ts * 0.3, cap * 0.28 + hs * 1.1),
+                   (0, cap * 0.28 + hs * 1.1)))
     anchors_uc(g, P, W / 2)
     g.anchor("cedilla", W * 0.48, 0)
     g.space(P.rndC * 0.75, P.rndC * 0.75)
@@ -348,13 +351,9 @@ def J(g, P):
     S, H, cap = P.stemC, P.hairC, P.cap
     pl = Pen(S / 2, H / 2)
     rb = (S * 0.52 + 5) * (1 - 0.15 * P.wf)
-    x0 = S * 0.9
-    p = Path(x0 + S / 2, cap - 20, d=270)
-    p.l(x0 + S / 2, cap * 0.10)
-    p.c(x0 - S * 0.35, -P.cap * 0.16 + pl.hv, d=180, w=1.0)
-    p.c(x0 - S * 1.35 + rb * 0.5, -P.cap * 0.16 + rb * 0.85, d=150, w=0.75)
-    g.add(stk(p, pl))
-    g.add(ellipse(x0 - S * 1.35 + rb * 0.8, -P.cap * 0.16 + rb * 1.02, rb, rb * 1.04))
+    x0 = S * 1.3
+    from .lower import hook_tail
+    g.add(hook_tail(P, x0 + S / 2, cap - 20, -P.cap * 0.17, S * 1.55 + P.cn * 0.10, pl, rb))
     serifs(g, P, x0, x0 + S, bottom=False)
     anchors_uc(g, P, x0 + S / 2)
     g.space(P.sbC * 0.5, P.sbC)

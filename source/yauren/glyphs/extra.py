@@ -335,6 +335,10 @@ def tbar(g, P):
 
 # ------------------------------------------------------------- Ŋ ŋ ĸ ŉ
 
+def P0stem(P):
+    return getattr(P, "lc_stem", P.stem)
+
+
 def eng_body(g, P):
     S, xh, d = P.stem, P.xh, P.desc
     pl = Pen(S / 2, P.hair / 2)
@@ -342,12 +346,8 @@ def eng_body(g, P):
     LC.stem(g, P, 0, 0, LC.XT(P))
     g.add(LC.arch(P, S, xr, 0))
     rb = LC.rbf(P, 0.54)
-    p = Path(xr + S / 2, 2, d=270)
-    p.l(xr + S / 2, d * 0.30)
-    p.c(xr - S * 0.40, d - P.os + pl.hv, d=180, w=1.0)
-    p.c(xr - S * 1.45 + rb * 0.6, d + rb * 0.9, d=145, w=0.75)
-    g.add(stk(p, pl))
-    g.add(LC.drop(P, xr - S * 1.45 + rb * 0.85, d - P.os + rb * 1.08, rb))
+    reach = S * 1.55 + P.cn * 0.12 if S < 1.05 * P0stem(P) else S * 1.25 + P.cn * 0.30
+    g.add(LC.hook_tail(P, xr + S / 2, 2, d - P.os, reach, pl, rb))
     return xr
 
 
@@ -363,6 +363,7 @@ def Eng(g, P):
     Q = P.copy()
     Q.xh = P.cap
     Q.os = P.osC
+    Q.lc_stem = P.stem
     Q.stem = P.stemC
     Q.hair = P.hairC
     Q.cn = P.cn * 1.30

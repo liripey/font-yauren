@@ -652,11 +652,18 @@ def ampersand(g, P):
     r = Path(W * 0.32, cap * 0.53, d=200, w=0.7)
     r.c(pc.hh, cap * 0.22, d=270, w=1.0)
     r.c(W * 0.38, -P.os + pc.hv, d=0, w=1.0)
-    r.c(W * 0.80, cap * 0.30, d=55, w=0.55)
+    r.c(W * 0.74, cap * 0.33, d=58, w=0.6)
+    r.c(W * 0.84, cap * 0.42 - H * 0.6, d=12, w=0.42)
     g.add(stk(r, pc))
-    # braço com serifa
-    t = H * 1.2
-    g.add(rect(W * 0.66, cap * 0.40 - t, W + P.sfx * 0.5, cap * 0.40))
+    # braço horizontal com serifa vertical (beak) para cima e para baixo
+    from ..parts import beak
+    t = H * 1.15
+    ya = cap * 0.42
+    xr = W + P.sfx * 0.3
+    g.add(rect(W * 0.78, ya - t, xr, ya))
+    g.add(beak(P, xr, ya, t, cap * 0.07, S * 0.34, side="right", taper=0.6, br=P.sfb * 0.6))
+    g.add(beak(P, xr, ya - t, t, cap * 0.05, S * 0.30, side="right", vert="up", taper=0.6,
+               br=P.sfb * 0.5))
     g.space(P.sb * 0.9, P.sb * 0.5)
 
 

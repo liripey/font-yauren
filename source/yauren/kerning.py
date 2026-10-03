@@ -146,7 +146,7 @@ def compute_kerning(gl, P, k_area=0.62, thresh=12):
     for key, (a, b) in {"lc": ("n", "n"), "uc": ("H", "H"), "mix": ("H", "n")}.items():
         ref[key] = avg_gap(prof(a), prof(b), 1e9)
     capd = ref["lc"] * 2.0
-    dmin = P.sb * 2 * 0.72
+    dmin = P.sb * 2 * 0.56
     kmax = P.cn * 0.42
 
     bases = [n for n in BASE_LETTERS + BASE_OTHER if n in gl]

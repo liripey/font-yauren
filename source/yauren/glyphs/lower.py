@@ -97,6 +97,20 @@ def drop(P, cx, cy, r=None, ry=None):
     return ellipse(cx, cy, r, r * 1.04 if ry is None else ry)
 
 
+def hook_tail(P, xs, ystart, bottom, reach, pen, rb, w_end=0.9, a=None, b=None):
+    """Cauda descendente com gota (j, y, ŋ, J): desce em xs, curva à
+    esquerda e termina subindo dentro da gota."""
+    hv = pen.hv
+    ex = xs - reach
+    p = Path(xs, ystart, d=270)
+    p.l(xs, bottom + reach * 0.62)
+    p.c(xs - reach * 0.52, bottom + hv, d=180, w=1.0, a=a, b=b)
+    p.c(ex, bottom + rb * 1.05, d=112, w=w_end)
+    out = stroke(p, pen)
+    out += drop(P, ex + rb * 0.16, bottom + rb * 1.0, rb)
+    return out
+
+
 def anchors_lc(g, x, top=None, P=None, bottom_x=None):
     g.anchor("top", x, P.xh if top is None else top)
     g.anchor("bottom", x if bottom_x is None else bottom_x, 0)
@@ -210,12 +224,7 @@ def j_body(g, P):
     pl, _ = pens(P)
     g.add(head_serif(P, 0, S, XT(P)))
     rb = rbf(P, 0.54)
-    p = Path(S / 2, XT(P) - P.hdd - 10, d=270)
-    p.l(S / 2, d * 0.30)
-    p.c(-S * 0.40, d - P.os + pl.hv, d=180, w=1.0)
-    p.c(-S * 1.45 + rb * 0.6, d + rb * 0.9, d=145, w=0.75)
-    g.add(stk(p, pl))
-    g.add(drop(P, -S * 1.45 + rb * 0.85, d - P.os + rb * 1.08, rb))
+    g.add(hook_tail(P, S / 2, XT(P) - P.hdd - 10, d - P.os, S * 1.55 + P.cn * 0.12, pl, rb))
 
 
 @glyph("dotlessj", 0x0237)
@@ -417,10 +426,11 @@ def s(g, P):
     # pequenas serifas verticais nos terminais
     ts = pen.hh * we * 2
     hs = xh * 0.075 * (1 - 0.55 * P.wf)
-    g.add(quad((W - ts, xh * 0.66), (W, xh * 0.66), (W, xh * 0.66 - hs),
-               (W - ts * 0.3, xh * 0.66 - hs)))
-    g.add(quad((0, xh * 0.31), (ts, xh * 0.31), (ts * 0.3, xh * 0.31 + hs * 1.1),
-               (0, xh * 0.31 + hs * 1.1)))
+    if hs >= 18:  # nos pesos pesados o esporão vira ruído: omite
+        g.add(quad((W - ts, xh * 0.66), (W, xh * 0.66), (W, xh * 0.66 - hs),
+                   (W - ts * 0.3, xh * 0.66 - hs)))
+        g.add(quad((0, xh * 0.31), (ts, xh * 0.31), (ts * 0.3, xh * 0.31 + hs * 1.1),
+                   (0, xh * 0.31 + hs * 1.1)))
     anchors_lc(g, W / 2, P=P)
     g.anchor("cedilla", W * 0.48, 0)
     g.space(P.rnd * 0.72, P.rnd * 0.72)
@@ -575,10 +585,11 @@ def y(g, P):
     rb = rbf(P, 0.50)
     p = Path(R[0] - thin / 2, xh + 30)
     p.l(xk, yk)
-    p.c(xk - W * 0.36, d - P.os + H * 0.55, d=180, w=1.0, a=S * 0.40, b=H * 0.55)
-    p.c(rb * 0.9 - S * 0.4, d + rb * 0.7, d=150, w=1.0, a=S * 0.32, b=H * 0.5)
+    ex = xk - W * 0.62
+    p.c(xk - W * 0.30, d - P.os + H * 0.55, d=180, w=1.0, a=S * 0.36, b=H * 0.55)
+    p.c(ex, d - P.os + rb * 1.05, d=118, w=1.0, a=S * 0.32, b=H * 0.5)
     g.add(clip(stk(p, pt), rect(-2000, xh, 4000, xh + 400)))
-    g.add(drop(P, rb * 0.95 - S * 0.4, d - P.os + rb * 1.06, rb))
+    g.add(drop(P, ex + rb * 0.12, d - P.os + rb * 0.98, rb))
     g.add(foot_serif(P, W - thin, W, xh, el=ei, er=ex, flip=True, sl=sr, sr=sr))
     anchors_lc(g, xa, P=P, bottom_x=xa + S * 1.1)
     g.space(P.sb * 0.45, P.sb * 0.45)

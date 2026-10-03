@@ -36,7 +36,7 @@ Todas as verificações abaixo são reproduzíveis com `./build.sh` e as ferrame
 | overshoot o / O | ±12 / ±14 | = | = | = | = | = | = |
 | avanço n / o / H | 564/560/740 | 618/615/799 | 644/643/825 | 674/675/854 | 704/709/883 | 732/739/910 | 760/771/935 |
 | glifos / caracteres | 814 / 728 | = | = | = | = | = | = |
-| pares de kerning | 4810 | 4633 | 4477 | 4312 | 4199 | 4195 | 4123 |
+| pares de kerning | 4774 | 4492 | 4374 | 4345 | 4323 | 4336 | 4319 |
 
 Observações de controle:
 
@@ -73,6 +73,11 @@ visíveis) e em texto corrido nos pesos extremos. Itens identificados e corrigid
 | 12 | `fl` com colisão entre gota do f e serifa do l | Ligadura clássica: o arco do f desce como haste do l |
 | 13 | Marcas combinadas vietnamitas e tonos gregos sem acesso por Unicode | Ligaduras `ccmp` e codificação U+0341/U+0344 |
 | 14 | Acento de ĺ alto demais | Âncora rebaixada |
+| 15 | Caudas de `j y J ŋ ђ` curtas, com gota "enrolada" | Nova cauda única: curva mais longa terminando dentro de uma gota de verdade |
+| 16 | `&` com braço retangular improvisado | Bojo inferior sobe até um braço fino com serifas verticais |
+| 17 | `Ta Te Tu Tr`, `Fé`, `Vá` frouxos: o bico do T impedia o encaixe | Distância mínima de kerning recalibrada; acentos continuam sem colisão |
+| 18 | Esporões dos terminais de `s S C G З` viravam "degraus" nos pesos pesados | Omitidos quando ficariam menores que 18 unidades |
+| 19 | `Ŋ` maiúsculo com cauda apertada (auto-sobreposição no Medium) | Cauda mais longa para proporções de maiúscula |
 
 ---
 
@@ -95,7 +100,7 @@ visíveis) e em texto corrido nos pesos extremos. Itens identificados e corrigid
 1. **Kerning** é gerado automaticamente (perfis ópticos + distância mínima). Cobre os pares críticos de
    forma consistente; recomenda-se revisar com textos reais da Yauren e acrescentar exceções para
    pares de marca específicos.
-2. Glifos de desenho mais complexo — `&`, `§`, `ẞ`, `ξ`, `ζ`, `Ђ` — são funcionais e coerentes com a
+2. Glifos de desenho mais complexo — `§`, `ẞ`, `ξ`, `ζ`, `Ђ` — são funcionais e coerentes com a
    família, mas mais simples que o restante; são os primeiros candidatos a um refinamento manual.
 3. **Sem itálicos**, conforme solicitado. Uma itálica verdadeira (não inclinada artificialmente) pode
    ser derivada do mesmo motor paramétrico no futuro.

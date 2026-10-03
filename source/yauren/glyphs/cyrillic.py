@@ -188,8 +188,9 @@ def Ze(g, P):
     q.c(pen.hh * we, cap * 0.26, d=90, w=we)
     g.add(stk(q, pen))
     hs = cap * 0.06 * (1 - 0.55 * P.wf)
-    ts = pen.hh * we * 2
-    g.add(quad((0, cap * 0.70), (ts, cap * 0.70), (ts * 0.7, cap * 0.70 - hs), (0, cap * 0.70 - hs)))
+    if hs >= 18:  # nos pesos pesados o esporão vira ruído: omite
+        ts = pen.hh * we * 2
+        g.add(quad((0, cap * 0.70), (ts, cap * 0.70), (ts * 0.7, cap * 0.70 - hs), (0, cap * 0.70 - hs)))
     UC.anchors_uc(g, P, W / 2)
     g.space(P.rndC * 0.75, P.rndC * 0.9)
 
@@ -486,12 +487,7 @@ def tshe(g, P, small, hook):
             hb.add(LC.arch(P, S, xr, 0))
             pl = Pen(S / 2, H / 2)
             rb = LC.rbf(P, 0.54)
-            p = Path(xr + S / 2, 2, d=270)
-            p.l(xr + S / 2, P.desc * 0.30)
-            p.c(xr - S * 0.40, P.desc - P.os + pl.hv, d=180, w=1.0)
-            p.c(xr - S * 1.45 + rb * 0.6, P.desc + rb * 0.9, d=145, w=0.75)
-            hb.add(stk(p, pl))
-            hb.add(LC.drop(P, xr - S * 1.45 + rb * 0.85, P.desc - P.os + rb * 1.08, rb))
+            hb.add(LC.hook_tail(P, xr + S / 2, 2, P.desc - P.os, S * 1.55 + P.cn * 0.12, pl, rb))
             hb.solve()
             hgl = hb.contours
         g.add(hgl)
