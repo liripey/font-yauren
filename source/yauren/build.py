@@ -108,11 +108,8 @@ def build_composite(name, built, P):
         shapes.append(transform_contours(M.contours, dx=dx, dy=dy))
         if key in M.anchors:
             anchors[key] = (M.anchors[key][0] + dx, M.anchors[key][1] + dy)
-    builder = pathops.OpBuilder(fix_winding=True, keep_starting_points=False)
-    for sh in shapes:
-        p = contours_to_skpath(sh)
-        builder.add(p, pathops.PathOp.UNION)
-    res = skpath_to_contours(builder.resolve())
+    from .glyph import union_all
+    res = union_all(shapes)
     return Built(name, unis, cleanup(res), B.width, anchors)
 
 
@@ -205,8 +202,8 @@ def make_font(P, style, glyphs, path, features=None, vmetrics=None):
     fam_name = FAMILY if ribbi else f"{FAMILY} {style}"
     sub_name = style if ribbi else "Regular"
     ps_name = f"{FAMILY}-{style}"
-    ul_pos = -int(round(110 + P.hair * 0.6))
-    ul_thk = int(round(P.hair * 1.25 + P.stem * 0.12))
+    ul_pos = -125
+    ul_thk = 55
     fb.setupCFF(
         ps_name,
         {"FullName": f"{FAMILY} {style}", "FamilyName": FAMILY, "Weight": style,
@@ -310,6 +307,19 @@ def main(argv=None):
         out = make_font(Params(w), names[w], gl, os.path.join(out_dir, f"{FAMILY}-{names[w]}.otf"),
                         features=fea, vmetrics=vm)
         print("ok", out, len(gl), "glifos")
+    # hinting PostScript (afdko otfautohint) + WOFF2 para web
+    import shutil
+    import subprocess
+    web_dir = os.path.join(out_dir, "..", "webfonts")
+    os.makedirs(web_dir, exist_ok=True)
+    for w, _, _ in results:
+        path = os.path.join(out_dir, f"{FAMILY}-{names[w]}.otf")
+        if shutil.which("otfautohint") and "--no-hint" not in argv:
+            subprocess.run(["otfautohint", path], check=True, capture_output=True)
+        from fontTools.ttLib import TTFont
+        f = TTFont(path)
+        f.flavor = "woff2"
+        f.save(os.path.join(web_dir, f"{FAMILY}-{names[w]}.woff2"))
 
 
 if __name__ == "__main__":

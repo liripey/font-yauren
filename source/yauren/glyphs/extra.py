@@ -45,7 +45,7 @@ def AE(g, P):
     g.add(foot_serif(P, 0, thin, 0, el=P.sfxC, er=P.sfxC * 0.6, sl=sl, sr=sl, caps=True))
     g.add(foot_serif(P, xe, xe + S, 0, el=P.sfxC * 0.8, er=0, caps=True))
     UC.anchors_uc(g, P, (xe + S + cn * 0.4))
-    g.space(P.sb * 0.3, P.sb * 0.55)
+    g.space(P.sbC * 0.3, P.sbC * 0.55)
 
 
 @glyph("ae", 0x00E6)
@@ -58,7 +58,7 @@ def ae(g, P):
     g.add(A)
     g.add(shift(E, xs + S / 2 - P.curve / 2))
     LC.anchors_lc(g, xs + S / 2, P=P)
-    g.space(P.sb * 1.0, P.sb * 0.95)
+    g.space(P.rnd * 0.8, P.rnd * 0.72)
 
 
 @glyph("OE", 0x0152)
@@ -74,7 +74,7 @@ def OE(g, P):
     g.add(rect(xe, 0, xe + S, cap))
     UC.e_arms(g, P, xe + S, xe + S + cn * 0.80, xe + S + cn * 0.66, xe + S + cn * 0.88)
     UC.anchors_uc(g, P, (xe + S) * 0.62)
-    g.space(P.sb * 1.05, P.sb * 0.55)
+    g.space(P.sbC * 1.05, P.sbC * 0.55)
 
 
 @glyph("oe", 0x0153)
@@ -84,7 +84,7 @@ def oe(g, P):
     g.add(O)
     g.add(shift(E, LC.o_width(P) - P.curve * 1.02))
     LC.anchors_lc(g, LC.o_width(P), P=P)
-    g.space(P.sb * 1.15, P.sb * 0.95)
+    g.space(P.rnd, P.rnd * 0.72)
 
 
 # ------------------------------------------------------------- Ø ø
@@ -105,7 +105,7 @@ def Oslash(g, P):
     g.add(slash_over(P, O, 1.1))
     W = UC.o_width_uc(P)
     UC.anchors_uc(g, P, W / 2)
-    g.space(P.sb * 1.05, P.sb * 1.05)
+    g.space(P.sbC * 1.05, P.sbC * 1.05)
 
 
 @glyph("oslash", 0x00F8)
@@ -114,7 +114,7 @@ def oslash(g, P):
     g.add(O)
     g.add(slash_over(P, O))
     LC.anchors_lc(g, LC.o_width(P) / 2, P=P)
-    g.space(P.sb * 1.15, P.sb * 1.15)
+    g.space(P.rnd, P.rnd)
 
 
 # ------------------------------------------------------------- Ð ð Đ đ Þ þ
@@ -127,7 +127,7 @@ def eth_cap(g, P):
     yb = P.cap * 0.49
     g.add(rect(-S * 0.42, yb - t / 2, S + cn * 0.36, yb + t / 2))
     UC.anchors_uc(g, P, (S + cn * 1.3) / 2)
-    g.space(P.sb * 0.6, P.sb * 1.1)
+    g.space(P.sbC * 0.6, P.sbC * 1.1)
 
 
 glyph("Eth", 0x00D0)(eth_cap)
@@ -144,7 +144,7 @@ def dcroat(g, P):
     yb = P.xh + (P.asc - P.xh) * 0.45
     g.add(rect(xs - S * 0.95, yb - t / 2, xs + S + S * 0.40, yb + t / 2))
     LC.anchors_lc(g, xs / 2 + S * 0.2, P=P)
-    g.space(P.sb * 1.15, P.sb * 0.8)
+    g.space(P.rnd, P.sb * 0.8)
 
 
 @glyph("eth", 0x00F0)
@@ -165,7 +165,7 @@ def eth(g, P):
     g.add(stk(q, pc))
     g.add(stk(Path(W * 0.26, asc * 0.73).l(W * 0.82, asc * 0.92), Pen(S * 0.22, H * 0.55)))
     LC.anchors_lc(g, W / 2, P=P)
-    g.space(P.sb * 1.15, P.sb * 1.1)
+    g.space(P.rnd, P.rnd)
 
 
 @glyph("Thorn", 0x00DE)
@@ -175,7 +175,7 @@ def Thorn(g, P):
     UC.serifs(g, P, 0, S)
     g.add(UC.p_bowl(P, S, S + cn * 0.72 + P.curveC, cap * 0.20, top=cap * 0.80))
     UC.anchors_uc(g, P, S / 2 + 20)
-    g.space(P.sb, P.sb * 0.7)
+    g.space(P.sbC, P.sbC * 0.7)
 
 
 @glyph("thorn", 0x00FE)
@@ -185,7 +185,7 @@ def thorn(g, P):
     LC.stem(g, P, 0, P.desc, P.asc, foot="both")
     g.add(LC.bowl_right(P, S, W, top_join=0.64, bot_join=0.10))
     LC.anchors_lc(g, (S + W) / 2, top=P.asc, P=P)
-    g.space(P.sb, P.sb * 1.15)
+    g.space(P.sb, P.rnd)
 
 
 # ------------------------------------------------------------- ß ẞ
@@ -209,7 +209,7 @@ def germandbls(g, P):
     q.c(S + 18, xh * 0.08, d=158, w=0.5)
     g.add(stk(q, pc))
     LC.anchors_lc(g, W / 2, top=asc, P=P)
-    g.space(P.sb, P.sb * 1.0)
+    g.space(P.sb, P.rnd * 0.8)
 
 
 @glyph("Germandbls", 0x1E9E)
@@ -229,7 +229,7 @@ def Germandbls(g, P):
     q.c(S + 20, cap * 0.06, d=165, w=0.5)
     g.add(stk(q, pc))
     UC.anchors_uc(g, P, W / 2)
-    g.space(P.sb, P.sb * 0.9)
+    g.space(P.sbC, P.sbC * 0.9)
 
 
 # ------------------------------------------------------------- Ħ ħ Ł ł Ŀ ŀ Ŧ ŧ
@@ -244,7 +244,7 @@ def Hbar(g, P):
     yb = P.cap * 0.77
     g.add(rect(-S * 0.30, yb - t / 2, W + S * 0.30, yb + t / 2))
     UC.anchors_uc(g, P, W / 2)
-    g.space(P.sb, P.sb)
+    g.space(P.sbC, P.sbC)
 
 
 @glyph("hbar", 0x0127)
@@ -271,7 +271,7 @@ def Lslash(g, P):
     S = P.stemC
     g.add(lslash_bar(P, S / 2, P.cap * 0.47, S * 1.05))
     UC.anchors_uc(g, P, S / 2 + 10, bottom_x=(S + P.cn) / 2)
-    g.space(P.sb * 0.5, P.sb * 0.4)
+    g.space(P.sbC * 0.5, P.sbC * 0.4)
 
 
 @glyph("lslash", 0x0142)
@@ -292,7 +292,7 @@ def Ldot(g, P):
     r = rdot(P) * 0.95
     g.add(ellipse(S + P.cn * 0.38, P.cap * 0.47, r, r))
     UC.anchors_uc(g, P, S / 2 + 10, bottom_x=(S + P.cn) / 2)
-    g.space(P.sb, P.sb * 0.4)
+    g.space(P.sbC, P.sbC * 0.4)
 
 
 @glyph("ldot", 0x0140)
@@ -317,7 +317,7 @@ def Tbar(g, P):
     yb = P.cap * 0.47
     g.add(rect(x0 - S * 0.75, yb - t / 2, x0 + S * 1.75, yb + t / 2))
     UC.anchors_uc(g, P, W / 2)
-    g.space(P.sb * 0.5, P.sb * 0.5)
+    g.space(P.sbC * 0.5, P.sbC * 0.5)
 
 
 @glyph("tbar", 0x0167)
@@ -341,7 +341,7 @@ def eng_body(g, P):
     xr = S + P.cn
     LC.stem(g, P, 0, 0, LC.XT(P))
     g.add(LC.arch(P, S, xr, 0))
-    rb = S * 0.54 + 5
+    rb = LC.rbf(P, 0.54)
     p = Path(xr + S / 2, 2, d=270)
     p.l(xr + S / 2, d * 0.30)
     p.c(xr - S * 0.40, d - P.os + pl.hv, d=180, w=1.0)
@@ -369,7 +369,7 @@ def Eng(g, P):
     Q.hdx = P.sfxC
     xr = eng_body(g, Q)
     UC.anchors_uc(g, P, (xr + Q.stem) / 2)
-    g.space(P.sb, P.sb)
+    g.space(P.sbC, P.sbC)
 
 
 @glyph("kgreenlandic", 0x0138)
@@ -396,7 +396,7 @@ def IJ(g, P):
     S = P.stemC
     g.add(I)
     g.add(shift(J, S + P.sfxC * 2 + P.sb * 0.8 - S * 0.9))
-    g.space(P.sb, P.sb)
+    g.space(P.sbC, P.sbC)
 
 
 @glyph("ij", 0x0133)
@@ -417,7 +417,7 @@ def schwa(g, P):
     b = contours_bounds(E)
     g.add(transform_contours(E, -1, 0, 0, -1, b[0] + b[2], P.xh))
     LC.anchors_lc(g, (b[0] + b[2]) / 2, P=P)
-    g.space(P.sb * 0.95, P.sb * 1.15)
+    g.space(P.rnd * 0.72, P.rnd)
 
 
 @glyph("Schwa", 0x018F)
@@ -433,7 +433,7 @@ def Schwa(g, P):
     b = contours_bounds(E)
     g.add(transform_contours(E, -1, 0, 0, -1, b[0] + b[2], P.cap))
     UC.anchors_uc(g, P, (b[0] + b[2]) / 2)
-    g.space(P.sb * 0.95, P.sb * 1.15)
+    g.space(P.sbC * 0.95, P.sbC * 1.15)
 
 
 @glyph("florin", 0x0192)
@@ -441,7 +441,7 @@ def florin(g, P):
     S, H, xh, asc, d = P.stem, P.hair, P.xh, P.asc, P.desc
     pl = Pen(S / 2, H / 2)
     W = P.cn * 0.95 + S
-    rb = S * 0.5 + 4
+    rb = LC.rbf(P, 0.5)
     p = Path(rb * 0.9, d + rb * 0.9, d=-30, w=0.75)
     p.c(W * 0.30, d - P.os + pl.hv, d=0, w=1.0)
     p.c(W * 0.46, d * 0.40, d=78, w=1.0)

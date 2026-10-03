@@ -18,13 +18,13 @@ WEIGHTS = [
 
 # tabela mestre: peso -> valores
 _T = {
-    300: dict(stem=58, hair=27, cn=300, sfx=40, sft=26, sfb=28, hdx=42, hdd=34, sb=30),
-    400: dict(stem=84, hair=35, cn=296, sfx=44, sft=33, sfb=34, hdx=46, hdd=38, sb=29),
-    500: dict(stem=100, hair=40, cn=292, sfx=45, sft=37, sfb=37, hdx=47, hdd=40, sb=28),
-    600: dict(stem=119, hair=45, cn=286, sfx=46, sft=41, sfb=40, hdx=48, hdd=42, sb=27),
+    300: dict(stem=58, hair=27, cn=300, sfx=40, sft=26, sfb=28, hdx=42, hdd=34, sb=33),
+    400: dict(stem=84, hair=35, cn=296, sfx=44, sft=33, sfb=34, hdx=46, hdd=38, sb=32),
+    500: dict(stem=100, hair=40, cn=292, sfx=45, sft=37, sfb=37, hdx=47, hdd=40, sb=30),
+    600: dict(stem=119, hair=45, cn=286, sfx=46, sft=41, sfb=40, hdx=48, hdd=42, sb=28),
     700: dict(stem=139, hair=50, cn=278, sfx=47, sft=45, sfb=43, hdx=49, hdd=44, sb=26),
-    800: dict(stem=160, hair=56, cn=268, sfx=48, sft=50, sfb=46, hdx=50, hdd=46, sb=24),
-    900: dict(stem=182, hair=62, cn=256, sfx=49, sft=55, sfb=49, hdx=51, hdd=48, sb=22),
+    800: dict(stem=160, hair=56, cn=268, sfx=48, sft=50, sfb=46, hdx=50, hdd=46, sb=23),
+    900: dict(stem=182, hair=62, cn=256, sfx=49, sft=55, sfb=49, hdx=51, hdd=48, sb=20),
 }
 
 
@@ -73,6 +73,10 @@ class Params:
         self.hdd = v["hdd"]          # queda da cunha
         # espaçamento base (a partir da ponta da serifa)
         self.sb = v["sb"]
+        # lados redondos medem-se do extremo da curva; retos, da ponta da serifa
+        self.rnd = (self.sb + self.sfx) * 0.72
+        self.sbC = self.sb * 1.4
+        self.rndC = (self.sbC + self.sfxC) * 0.70
         # eixo de contraste (graus) para bojos
         self.ang = 8.0
         # escala horizontal (para variantes reduzidas)
@@ -86,7 +90,7 @@ class Params:
         engrossa os traços relativamente para manter a cor tipográfica."""
         q = self.copy()
         for k in ("xh", "cap", "asc", "desc", "fig", "os", "osC", "cn", "sfx", "sfb",
-                  "sfxC", "sfbC", "hdx", "hdd", "sb", "u"):
+                  "sfxC", "sfbC", "hdx", "hdd", "sb", "u", "rnd", "sbC", "rndC"):
             setattr(q, k, getattr(self, k) * s)
         for k in ("stem", "hair", "stemC", "hairC", "curve", "curveC", "sft", "sftC"):
             setattr(q, k, getattr(self, k) * s * weight_comp)

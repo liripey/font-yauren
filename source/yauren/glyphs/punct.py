@@ -281,7 +281,7 @@ def hyphen_t(P):
     return P.stem * 0.52 + 4
 
 
-@glyph("hyphen", 0x002D, 0x00AD, 0x2010)
+@glyph("hyphen", 0x002D, 0x2010)
 def hyphen(g, P):
     t = hyphen_t(P)
     yc = P.xh * 0.50

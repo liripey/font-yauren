@@ -288,7 +288,7 @@ def _harmonize(c, tol_deg=4.0):
     return [tuple(s) for s in out]
 
 
-def cleanup(contours):
+def _cleanup_once(contours):
     out = []
     for c in contours:
         if not c:
@@ -297,10 +297,39 @@ def cleanup(contours):
         if len(c) < 2:
             continue
         c = _harmonize(c)
-        if abs(contour_area(c)) < 4:
+        if abs(contour_area(c)) < 60:
+            continue
+        b = contours_bounds([c])
+        if b[2] - b[0] < 4 or b[3] - b[1] < 4:
             continue
         out.append(c)
     return out
+
+
+def cleanup(contours):
+    """Limpa, arredonda e re-simplifica até estabilizar (o arredondamento
+    pode criar microsobreposições)."""
+    out = _cleanup_once(contours)
+    for _ in range(2):
+        p = contours_to_skpath(out)
+        p.simplify(fix_winding=True, keep_starting_points=True)
+        again = _cleanup_once(skpath_to_contours(p))
+        if _same(again, out):
+            break
+        out = again
+    return out
+
+
+def _same(a, b):
+    if len(a) != len(b):
+        return False
+    for ca, cb in zip(a, b):
+        if len(ca) != len(cb):
+            return False
+        for sa, sb in zip(ca, cb):
+            if sa[0] != sb[0] or any(not np.array_equal(x, y) for x, y in zip(sa[1:], sb[1:])):
+                return False
+    return True
 
 
 def clip(shape, *cutters):
@@ -362,20 +391,31 @@ class Glyph:
         self.center = center
 
     def solve(self):
-        builder = pathops.OpBuilder(fix_winding=True, keep_starting_points=False)
-        any_add = False
+        # Obs.: OpBuilder do skia-pathops falha em alguns casos com furos;
+        # operações booleanas sequenciais são robustas.
+        acc = None
         for shape in self.adds:
             p = contours_to_skpath(shape)
             p.simplify(fix_winding=True, keep_starting_points=False)
-            builder.add(p, pathops.PathOp.UNION)
-            any_add = True
+            acc = p if acc is None else pathops.op(acc, p, pathops.PathOp.UNION,
+                                                   fix_winding=True, keep_starting_points=False)
+        if acc is None:
+            self.contours = []
+            return self
         for shape in self.cuts:
             p = contours_to_skpath(shape)
             p.simplify(fix_winding=True, keep_starting_points=False)
-            builder.add(p, pathops.PathOp.DIFFERENCE)
-        if not any_add:
-            self.contours = []
-            return self
-        res = builder.resolve()
-        self.contours = skpath_to_contours(res)
+            acc = pathops.op(acc, p, pathops.PathOp.DIFFERENCE, fix_winding=True,
+                             keep_starting_points=False)
+        self.contours = skpath_to_contours(acc)
         return self
+
+
+def union_all(shapes):
+    acc = None
+    for shape in shapes:
+        p = contours_to_skpath(shape)
+        p.simplify(fix_winding=True, keep_starting_points=False)
+        acc = p if acc is None else pathops.op(acc, p, pathops.PathOp.UNION,
+                                               fix_winding=True, keep_starting_points=False)
+    return skpath_to_contours(acc) if acc is not None else []

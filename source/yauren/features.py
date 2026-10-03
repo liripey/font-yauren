@@ -49,6 +49,10 @@ def build_features(gl, P, kern=True):
         out.append("    sub i' @CombTop by dotlessi;")
         out.append("    sub j' @CombTop by dotlessj;")
         out.append("  } ccmp_dotless;")
+    if "caroncomb.alt" in names:
+        out.append("  lookup ccmp_caron {")
+        out.append("    sub [d l L t] caroncomb' by caroncomb.alt;")
+        out.append("  } ccmp_caron;")
     if top_case:
         out.append(f"  @CombTopLC = {_cls(top_marks_c)};")
         out.append(f"  @CombTopUC = {_cls(top_case)};")
@@ -205,8 +209,22 @@ def mark_features(gl, P):
     bases = sorted(n for n, b in gl.items() if n not in is_mark and b.contours and n not in ("fi", "fl"))
     ligs = [n for n in ("fi", "fl") if n in gl]
     lines.append("table GDEF {")
-    lines.append(f"  GlyphClassDef [{' '.join(bases)}], [{' '.join(ligs)}], [{' '.join(sorted(is_mark))}], ;")
+    marks_all = sorted(is_mark | ({"caroncomb.alt"} & set(gl)))
+    bases = [b for b in bases if b not in marks_all]
+    lines.append(f"  GlyphClassDef [{' '.join(bases)}], [{' '.join(ligs)}], [{' '.join(marks_all)}], ;")
+    for lg in ligs:
+        lines.append(f"  LigatureCaretByPos {lg} {round(gl[lg].width * 0.5)};")
     lines.append("} GDEF;\n")
+    if "caroncomb.alt" in gl:
+        x, y = gl["caroncomb.alt"].anchors["_topright"]
+        lines.append(f"markClass caroncomb.alt <anchor {round(x)} {round(y)}> @MC_topright;")
+        lines.append("feature mark {")
+        lines.append("  lookup mark_topright {")
+        for n in ("d", "l", "L", "t"):
+            a = gl[n].anchors.get("topright") or default_anchor(gl[n], "topright", P)
+            lines.append(f"    pos base {n} <anchor {round(a[0])} {round(a[1])}> mark @MC_topright;")
+        lines.append("  } mark_topright;")
+        lines.append("} mark;\n")
     lines.append("feature mkmk {")
     for k in ("top", "bottom"):
         ms = [m for m in marks[k] if k in gl[m].anchors]

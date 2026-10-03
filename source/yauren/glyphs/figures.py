@@ -26,7 +26,7 @@ class F:
         self.bw = (P.cn * 1.12 + 1.9 * self.S) * wk
         self.pl = Pen(self.S / 2, self.H / 2)
         self.pc = Pen(self.C / 2, self.H / 2, P.ang)
-        self.rb = self.S * 0.50 + 4
+        self.rb = (self.S * 0.50 + 4) * (1 - 0.15 * P.wf)
 
     def Y(self, k):
         return self.y0 + self.FH * k
@@ -196,10 +196,17 @@ DRAW = [d_zero, d_one, d_two, d_three, d_four, d_five, d_six, d_seven, d_eight, 
 
 # espaçamento proporcional (múltiplos de P.sb)
 PROP_SB = {
-    "zero": (1.3, 1.3), "one": (1.0, 1.0), "two": (1.0, 1.0), "three": (1.1, 1.1),
-    "four": (0.8, 1.0), "five": (1.1, 1.1), "six": (1.2, 1.1), "seven": (1.0, 0.8),
-    "eight": (1.15, 1.15), "nine": (1.1, 1.2),
+    "zero": ("rnd", 1.0, "rnd", 1.0), "one": ("sb", 1.0, "sb", 1.0),
+    "two": ("sb", 0.9, "sb", 0.9), "three": ("rnd", 0.8, "rnd", 0.9),
+    "four": ("sb", 0.7, "sb", 1.0), "five": ("rnd", 0.8, "rnd", 0.9),
+    "six": ("rnd", 1.0, "rnd", 0.85), "seven": ("sb", 0.8, "sb", 0.6),
+    "eight": ("rnd", 0.9, "rnd", 0.9), "nine": ("rnd", 0.85, "rnd", 1.0),
 }
+
+
+def prop_sb(P, name):
+    a, x, b, y = PROP_SB[name]
+    return getattr(P, a) * x, getattr(P, b) * y
 
 # estilo antigo: (altura relativa, deslocamento vertical relativo à altura-x)
 OSF = {
@@ -231,8 +238,7 @@ def _make(name, idx, mode):
         if mode == "tab" or mode == "zero":
             g.space(width=tab_width(P), center=True)
         else:
-            l, r = PROP_SB[name]
-            g.space(P.sb * l, P.sb * r)
+            g.space(*prop_sb(P, name))
     return fn
 
 
@@ -260,8 +266,8 @@ def _make_small(idx, y0_fn, tab=False):
         f = F(Q, Q.fig, y0_fn(P, Q))
         DRAW[idx](g, f)
         n = NAMES[idx]
-        l, r = PROP_SB[n]
-        g.space(Q.sb * l * 0.9, Q.sb * r * 0.9)
+        l, r = prop_sb(Q, n)
+        g.space(l * 0.9, r * 0.9)
     return fn
 
 

@@ -52,7 +52,7 @@ def H(g, P):
     g.add(rect(S - 1, yc - bar / 2, x2 + 1, yc + bar / 2))
     anchors_uc(g, P, (x2 + S) / 2)
     g.anchor("ogonek", x2 + S * 0.6, 0)
-    g.space(P.sb, P.sb)
+    g.space(P.sbC, P.sbC)
 
 
 @glyph("I", 0x0049)
@@ -61,7 +61,7 @@ def I(g, P):
     ustem(g, P, 0)
     anchors_uc(g, P, S / 2)
     g.anchor("ogonek", S * 0.55, 0)
-    g.space(P.sb, P.sb)
+    g.space(P.sbC, P.sbC)
 
 
 def e_arms(g, P, S, top_r, mid_r, bot_r, mid_y=0.515, beaks=True):
@@ -88,7 +88,7 @@ def E(g, P):
     e_arms(g, P, S, S + cn * 1.02, S + cn * 0.86, S + cn * 1.12)
     anchors_uc(g, P, (S + cn * 1.0) / 2)
     g.anchor("ogonek", S + cn * 0.9, 0)
-    g.space(P.sb, P.sb * 0.55)
+    g.space(P.sbC, P.sbC * 0.55)
 
 
 @glyph("F", 0x0046)
@@ -98,7 +98,7 @@ def F(g, P):
     serifs(g, P, 0, S, tr=0, br=P.sfxC * 1.1)
     e_arms(g, P, S, S + cn * 1.00, S + cn * 0.84, None, mid_y=0.50)
     anchors_uc(g, P, (S + cn * 0.9) / 2, bottom_x=S / 2)
-    g.space(P.sb, P.sb * 0.55)
+    g.space(P.sbC, P.sbC * 0.55)
 
 
 @glyph("L", 0x004C)
@@ -110,7 +110,7 @@ def L(g, P):
     anchors_uc(g, P, S / 2 + 10, bottom_x=(S + cn) / 2)
     g.anchor("topright", S + P.sfxC, P.cap)
     g.anchor("center", S + cn * 0.35, P.cap * 0.5)
-    g.space(P.sb, P.sb * 0.4)
+    g.space(P.sbC, P.sbC * 0.4)
 
 
 @glyph("T", 0x0054)
@@ -126,7 +126,7 @@ def T(g, P):
     g.add(beak(P, W, cap, tt, cap * 0.14, S * 0.42, side="right"))
     anchors_uc(g, P, W / 2)
     g.anchor("cedilla", W / 2, 0)
-    g.space(P.sb * 0.5, P.sb * 0.5)
+    g.space(P.sbC * 0.45, P.sbC * 0.45)
 
 
 # ------------------------------------------------------------- P R B D
@@ -153,7 +153,7 @@ def P_(g, P):
     serifs(g, P, 0, S, tr=0, br=P.sfxC * 1.05)
     g.add(p_bowl(P, S, S + cn * 0.72 + P.curveC, cap * 0.40))
     anchors_uc(g, P, (S + cn) / 2, bottom_x=S / 2)
-    g.space(P.sb, P.sb * 0.6)
+    g.space(P.sbC, P.rndC * 0.8)
 
 
 @glyph("R", 0x0052)
@@ -174,7 +174,7 @@ def R(g, P):
     g.add(foot_serif(P, lx - th, lx, 0, el=P.sfxC * 0.5, er=P.sfxC * 0.85, caps=True,
                      sl=-sl, sr=-sl))
     anchors_uc(g, P, (S + cn) / 2, bottom_x=S / 2)
-    g.space(P.sb, P.sb * 0.4)
+    g.space(P.sbC, P.sbC * 0.4)
 
 
 @glyph("B", 0x0042)
@@ -187,7 +187,7 @@ def B(g, P):
     g.add(p_bowl(P, S, S + cn * 0.58 + P.curveC, ym - pc.hv * 0.6))
     g.add(p_bowl(P, S, S + cn * 0.71 + P.curveC, 0, top=ym + pc.hv * 0.6, k=0.45))
     anchors_uc(g, P, (S + cn) / 2)
-    g.space(P.sb, P.sb * 0.8)
+    g.space(P.sbC, P.rndC * 0.85)
 
 
 @glyph("D", 0x0044)
@@ -197,7 +197,7 @@ def D(g, P):
     serifs(g, P, 0, S, tr=0, br=0)
     g.add(p_bowl(P, S, S + cn * 1.08 + P.curveC, 0, k=0.34))
     anchors_uc(g, P, (S + cn * 1.3) / 2)
-    g.space(P.sb, P.sb * 1.1)
+    g.space(P.sbC, P.rndC)
 
 
 # ------------------------------------------------------------- O Q C G
@@ -223,7 +223,7 @@ def O(g, P):
     g.add(o_ring(P, 0, W))
     anchors_uc(g, P, W / 2)
     g.anchor("ogonek", W * 0.55, 0)
-    g.space(P.sb * 1.05, P.sb * 1.05)
+    g.space(P.rndC, P.rndC)
 
 
 @glyph("Q", 0x0051)
@@ -236,7 +236,7 @@ def Q(g, P):
     p.c(W * 1.06, -P.cap * 0.20, d=-2, w=0.35)
     g.add(stk(p, Pen(S * 0.46, H * 0.62)))
     anchors_uc(g, P, W / 2)
-    g.space(P.sb * 1.05, P.sb * 0.6)
+    g.space(P.rndC, P.rndC * 0.6)
 
 
 @glyph("C", 0x0043)
@@ -256,11 +256,12 @@ def C(g, P):
     g.add(stk(p, pc))
     # serifa vertical do terminal superior
     ts = pc.hh * we * 2
-    g.add(quad((W - ts, cap * 0.72), (W, cap * 0.72), (W, cap * 0.72 - cap * 0.07),
-               (W - ts * 0.4, cap * 0.72 - cap * 0.07)))
+    hs = cap * 0.07 * (1 - 0.55 * P.wf)
+    g.add(quad((W - ts, cap * 0.72), (W, cap * 0.72), (W, cap * 0.72 - hs),
+               (W - ts * 0.3, cap * 0.72 - hs)))
     anchors_uc(g, P, W * 0.55)
     g.anchor("cedilla", W * 0.53, 0)
-    g.space(P.sb * 1.05, P.sb * 0.6)
+    g.space(P.rndC, P.rndC * 0.55)
 
 
 @glyph("G", 0x0047)
@@ -280,14 +281,15 @@ def G(g, P):
     p.l(W - S / 2, cap * 0.42)
     g.add(stk(p, Pen(pc.A, pc.B, P.ang)))
     ts = pc.hh * we * 2
-    g.add(quad((W - ts, cap * 0.72), (W, cap * 0.72), (W, cap * 0.72 - cap * 0.07),
-               (W - ts * 0.4, cap * 0.72 - cap * 0.07)))
+    hs = cap * 0.07 * (1 - 0.55 * P.wf)
+    g.add(quad((W - ts, cap * 0.72), (W, cap * 0.72), (W, cap * 0.72 - hs),
+               (W - ts * 0.3, cap * 0.72 - hs)))
     # barra/serifa do queixo
     yb = cap * 0.42
     g.add(foot_serif(P, W - S, W, yb, el=P.cn * 0.30, er=P.sfxC * 0.4, caps=True, flip=True))
     anchors_uc(g, P, W * 0.55)
     g.anchor("cedilla", W * 0.52, 0)
-    g.space(P.sb * 1.05, P.sb * 0.8)
+    g.space(P.rndC, P.sbC * 0.8)
 
 
 # ------------------------------------------------------------- S
@@ -309,13 +311,14 @@ def S_(g, P):
     p.c(pen.hh * we, cap * 0.28, d=90, w=we)
     g.add(stk(p, pen))
     ts = pen.hh * we * 2
-    g.add(quad((W - ts, cap * 0.70), (W, cap * 0.70), (W, cap * 0.70 - cap * 0.07),
-               (W - ts * 0.45, cap * 0.70 - cap * 0.07)))
-    g.add(quad((0, cap * 0.28), (ts, cap * 0.28), (ts * 0.55, cap * 0.28 + cap * 0.08),
-               (0, cap * 0.28 + cap * 0.08)))
+    hs = cap * 0.07 * (1 - 0.55 * P.wf)
+    g.add(quad((W - ts, cap * 0.70), (W, cap * 0.70), (W, cap * 0.70 - hs),
+               (W - ts * 0.3, cap * 0.70 - hs)))
+    g.add(quad((0, cap * 0.28), (ts, cap * 0.28), (ts * 0.3, cap * 0.28 + hs * 1.1),
+               (0, cap * 0.28 + hs * 1.1)))
     anchors_uc(g, P, W / 2)
     g.anchor("cedilla", W * 0.48, 0)
-    g.space(P.sb * 0.95, P.sb * 0.95)
+    g.space(P.rndC * 0.75, P.rndC * 0.75)
 
 
 # ------------------------------------------------------------- U J
@@ -337,14 +340,14 @@ def U(g, P):
     serifs(g, P, W - thin, W, bottom=False, tl=P.sfxC * 0.85, tr=P.sfxC * 0.85)
     anchors_uc(g, P, W / 2)
     g.anchor("ogonek", W * 0.55, 0)
-    g.space(P.sb, P.sb)
+    g.space(P.sbC, P.sbC)
 
 
 @glyph("J", 0x004A)
 def J(g, P):
     S, H, cap = P.stemC, P.hairC, P.cap
     pl = Pen(S / 2, H / 2)
-    rb = S * 0.52 + 5
+    rb = (S * 0.52 + 5) * (1 - 0.15 * P.wf)
     x0 = S * 0.9
     p = Path(x0 + S / 2, cap - 20, d=270)
     p.l(x0 + S / 2, cap * 0.10)
@@ -354,7 +357,7 @@ def J(g, P):
     g.add(ellipse(x0 - S * 1.35 + rb * 0.8, -P.cap * 0.16 + rb * 1.02, rb, rb * 1.04))
     serifs(g, P, x0, x0 + S, bottom=False)
     anchors_uc(g, P, x0 + S / 2)
-    g.space(P.sb * 0.5, P.sb)
+    g.space(P.sbC * 0.5, P.sbC)
 
 
 # ------------------------------------------------------------- V W X Y A
@@ -387,7 +390,7 @@ def V(g, P):
     W = P.cn * 1.40 + S * 1.5
     xa = vee(g, P, 0, W, cap, -P.osC * 0.8, S * 1.06, H * 1.3, H * 0.6)
     anchors_uc(g, P, xa)
-    g.space(P.sb * 0.3, P.sb * 0.3)
+    g.space(P.sbC * 0.3, P.sbC * 0.3)
 
 
 @glyph("W", 0x0057)
@@ -400,7 +403,7 @@ def W_(g, P):
     off = W - thin * 0.5 - S * 0.66
     xa2 = vee(g, P, off, W, cap, bottom, thick, thin, H * 0.5, serif_l=False)
     anchors_uc(g, P, (xa1 + xa2) / 2)
-    g.space(P.sb * 0.3, P.sb * 0.3)
+    g.space(P.sbC * 0.3, P.sbC * 0.3)
 
 
 @glyph("X", 0x0058)
@@ -418,7 +421,7 @@ def X(g, P):
     g.add(foot_serif(P, W - thin, W, cap, el=ei, er=ex, flip=True, sl=-s2, sr=-s2, caps=True))
     g.add(foot_serif(P, 0, thin, 0, el=ex, er=ei, sl=s2, sr=s2, caps=True))
     anchors_uc(g, P, W / 2)
-    g.space(P.sb * 0.3, P.sb * 0.3)
+    g.space(P.sbC * 0.3, P.sbC * 0.3)
 
 
 @glyph("Y", 0x0059)
@@ -443,7 +446,7 @@ def Y(g, P):
     g.add(foot_serif(P, 0, thick, cap, el=P.sfxC, er=P.sfxC * 0.55, flip=True, sl=sl, sr=sl, caps=True))
     g.add(foot_serif(P, W - thin, W, cap, el=P.sfxC * 0.55, er=P.sfxC, flip=True, sl=sr, sr=sr, caps=True))
     anchors_uc(g, P, xc)
-    g.space(P.sb * 0.3, P.sb * 0.3)
+    g.space(P.sbC * 0.3, P.sbC * 0.3)
 
 
 @glyph("A", 0x0041)
@@ -473,7 +476,7 @@ def A(g, P):
     g.add(foot_serif(P, W - thick, W, 0, el=P.sfxC * 0.6, er=P.sfxC, sl=sr, sr=sr, caps=True))
     anchors_uc(g, P, xa)
     g.anchor("ogonek", W - S * 0.4, 0)
-    g.space(P.sb * 0.3, P.sb * 0.3)
+    g.space(P.sbC * 0.3, P.sbC * 0.3)
 
 
 # ------------------------------------------------------------- K M N Z
@@ -503,7 +506,7 @@ def K(g, P):
     g.add(foot_serif(P, lx - thick, lx, 0, el=P.sfxC * 0.55, er=P.sfxC * 0.95, sl=-sl, sr=-sl,
                      caps=True))
     anchors_uc(g, P, (S + W) / 2 - S * 0.3, bottom_x=W / 2)
-    g.space(P.sb, P.sb * 0.3)
+    g.space(P.sbC, P.sbC * 0.3)
 
 
 @glyph("N", 0x004E)
@@ -522,7 +525,7 @@ def N(g, P):
     g.add(foot_serif(P, 0, thin, cap, el=P.sfxC, er=0, caps=True, flip=True))
     g.add(foot_serif(P, W - thin, W, cap, caps=True, flip=True))
     anchors_uc(g, P, W / 2)
-    g.space(P.sb, P.sb)
+    g.space(P.sbC, P.sbC)
 
 
 @glyph("M", 0x004D)
@@ -543,7 +546,7 @@ def M(g, P):
     g.add(foot_serif(P, W - S, W, 0, caps=True))
     g.add(foot_serif(P, W - S, W, cap, el=0, er=P.sfxC, caps=True, flip=True))
     anchors_uc(g, P, W / 2)
-    g.space(P.sb, P.sb)
+    g.space(P.sbC, P.sbC)
 
 
 @glyph("Z", 0x005A)
@@ -560,4 +563,4 @@ def Z(g, P):
     g.add(beak(P, S * 0.12, cap, bt, cap * 0.14, S * 0.40, side="left"))
     g.add(beak(P, W, 0, bb, cap * 0.16, S * 0.44, side="right", vert="up"))
     anchors_uc(g, P, W / 2)
-    g.space(P.sb * 0.6, P.sb * 0.6)
+    g.space(P.sbC * 0.7, P.sbC * 0.7)

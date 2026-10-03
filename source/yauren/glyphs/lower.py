@@ -86,9 +86,14 @@ def bowl_left(P, xs, top_join=0.66, bot_join=0.14, peak=0.54, wj=0.32, wb=0.40,
     return stk(p, pc)
 
 
+def rbf(P, k):
+    """Raio de gota/bola: proporcional à haste, contido nos pesos pesados."""
+    return (P.stem * k + 5) * (1 - 0.15 * P.wf)
+
+
 def drop(P, cx, cy, r=None, ry=None):
     """Terminal em gota/bola."""
-    r = P.stem * 0.56 + 4 if r is None else r
+    r = rbf(P, 0.56) if r is None else r
     return ellipse(cx, cy, r, r * 1.04 if ry is None else ry)
 
 
@@ -143,7 +148,7 @@ def r(g, P):
     pl, _ = pens(P)
     stem(g, P, 0, 0, XT(P), foot="both", er=P.sfx * 1.7)
     top = xh + P.os
-    rb = S * 0.56 + 6
+    rb = rbf(P, 0.56)
     ex = S + P.cn * 0.62
     p = Path(S - S * 0.32, xh * 0.58, d=66, w=0.30)
     p.c(S + P.cn * 0.26, top - pl.hv, d=0, w=1.0)
@@ -204,7 +209,7 @@ def j_body(g, P):
     S, xh, d = P.stem, P.xh, P.desc
     pl, _ = pens(P)
     g.add(head_serif(P, 0, S, XT(P)))
-    rb = S * 0.54 + 5
+    rb = rbf(P, 0.54)
     p = Path(S / 2, XT(P) - P.hdd - 10, d=270)
     p.l(S / 2, d * 0.30)
     p.c(-S * 0.40, d - P.os + pl.hv, d=180, w=1.0)
@@ -256,7 +261,7 @@ def o(g, P):
     g.add(stk(p, pc))
     anchors_lc(g, W / 2, P=P)
     g.anchor("ogonek", W * 0.55, 0)
-    g.space(P.sb * 1.15, P.sb * 1.15)
+    g.space(P.rnd, P.rnd)
 
 
 @glyph("c", 0x0063)
@@ -267,7 +272,7 @@ def c(g, P):
     t = 0.96
     top = xh + P.os
     bot = -P.os
-    rb = S * 0.54 + 5
+    rb = rbf(P, 0.54)
     bx = W - rb
     by = xh - rb * 1.35
     p = Path(bx + rb * 0.15, by + rb * 0.2, d=88, w=0.62)
@@ -279,7 +284,7 @@ def c(g, P):
     g.add(drop(P, bx, by, rb))
     anchors_lc(g, W * 0.55, P=P)
     g.anchor("cedilla", W * 0.52, 0)
-    g.space(P.sb * 1.15, P.sb * 0.75)
+    g.space(P.rnd, P.rnd * 0.55)
 
 
 @glyph("e", 0x0065)
@@ -301,7 +306,7 @@ def e(g, P):
     g.add(stk(p, pc))
     anchors_lc(g, W * 0.52, P=P)
     g.anchor("ogonek", W * 0.62, 0)
-    g.space(P.sb * 1.15, P.sb * 0.95)
+    g.space(P.rnd, P.rnd * 0.72)
 
 
 # ------------------------------------------------------------- b d p q
@@ -320,7 +325,7 @@ def b(g, P):
     # esporão na base esquerda
     g.add(poly((0, 0), (S, 0), (S, 40), (-S * 0.22, 0)))
     anchors_lc(g, (S + W) / 2, top=P.asc, P=P)
-    g.space(P.sb, P.sb * 1.15)
+    g.space(P.sb, P.rnd)
 
 
 @glyph("p", 0x0070)
@@ -330,7 +335,7 @@ def p(g, P):
     stem(g, P, 0, P.desc, XT(P), foot="both")
     g.add(bowl_right(P, S, W, top_join=0.64, bot_join=0.10))
     anchors_lc(g, (S + W) / 2, P=P)
-    g.space(P.sb, P.sb * 1.15)
+    g.space(P.sb, P.rnd)
 
 
 @glyph("d", 0x0064)
@@ -341,7 +346,7 @@ def d(g, P):
     stem(g, P, xs, 0, P.asc, foot="right")
     anchors_lc(g, xs / 2 + S * 0.2, P=P)
     g.anchor("topright", xs + S, P.asc)
-    g.space(P.sb * 1.15, P.sb)
+    g.space(P.rnd, P.sb)
 
 
 @glyph("q", 0x0071)
@@ -357,7 +362,7 @@ def q(g, P):
                (xs + S + S * 0.42, tp - P.hdd * 0.7 - P.hair * 0.5), (xs + S, tp - P.hdd - 30),
                (xs, tp - 60)))
     anchors_lc(g, xs / 2 + S * 0.2, P=P)
-    g.space(P.sb * 1.15, P.sb)
+    g.space(P.rnd, P.sb)
 
 
 # ------------------------------------------------------------- a
@@ -370,7 +375,7 @@ def a(g, P, foot=True):
     xs = W - S                  # borda esquerda da haste
     top = xh + P.os
     # haste + gancho superior com gota
-    rb = S * 0.56 + 5
+    rb = rbf(P, 0.56)
     p = Path(xs + S / 2, P.sft + 2, d=90)
     p.l(xs + S / 2, xh * 0.58)
     p.c(xs * 0.52, top - pl.hv, d=180, w=1.0)
@@ -381,14 +386,14 @@ def a(g, P, foot=True):
     if foot:
         g.add(foot_serif(P, xs, xs + S, 0, el=0, er=P.sfx * 0.8))
     # bojo
-    q = Path(xs + S * 0.32, xh * 0.60, d=198, w=0.55)
-    q.c(pc.hh * 0.98, xh * 0.24, d=270, w=1.0)
+    q = Path(xs + S * 0.32, xh * (0.60 + 0.05 * P.wf), d=198, w=0.55)
+    q.c(pc.hh * 0.98 * (1 - 0.12 * P.wf), xh * 0.24, d=270, w=1.0 - 0.12 * P.wf)
     q.c(xs * 0.50, -P.os + pc.hv, d=0)
     q.c(xs + S * 0.30, xh * 0.18, d=52, w=0.40)
     g.add(stk(q, pc))
     anchors_lc(g, W * 0.48, P=P)
     g.anchor("ogonek", W - S * 0.3, 0)
-    g.space(P.sb * 1.0, P.sb * 0.8)
+    g.space(P.rnd * 0.8, P.sb * 0.8)
 
 
 # ------------------------------------------------------------- s
@@ -411,13 +416,14 @@ def s(g, P):
     g.add(stk(p, pen))
     # pequenas serifas verticais nos terminais
     ts = pen.hh * we * 2
-    g.add(quad((W - ts, xh * 0.66), (W, xh * 0.66), (W, xh * 0.66 - xh * 0.07),
-               (W - ts * 0.45, xh * 0.66 - xh * 0.07)))
-    g.add(quad((0, xh * 0.31), (ts, xh * 0.31), (ts * 0.55, xh * 0.31 + xh * 0.08),
-               (0, xh * 0.31 + xh * 0.08)))
+    hs = xh * 0.075 * (1 - 0.55 * P.wf)
+    g.add(quad((W - ts, xh * 0.66), (W, xh * 0.66), (W, xh * 0.66 - hs),
+               (W - ts * 0.3, xh * 0.66 - hs)))
+    g.add(quad((0, xh * 0.31), (ts, xh * 0.31), (ts * 0.3, xh * 0.31 + hs * 1.1),
+               (0, xh * 0.31 + hs * 1.1)))
     anchors_lc(g, W / 2, P=P)
     g.anchor("cedilla", W * 0.48, 0)
-    g.space(P.sb * 1.0, P.sb * 1.0)
+    g.space(P.rnd * 0.72, P.rnd * 0.72)
 
 
 # ------------------------------------------------------------- t f
@@ -450,7 +456,7 @@ def f(g, P, bar=True):
     pl, _ = pens(P)
     x0 = S * 0.60
     top = P.asc + P.os * 0.5
-    rb = S * 0.55 + 6
+    rb = rbf(P, 0.55)
     stem(g, P, x0, 0, xh, head=False, foot="both", er=P.sfx * 1.4)
     hx = x0 + S + P.cn * 0.56
     p = Path(x0 + S / 2, xh - 10, d=90)
@@ -566,7 +572,7 @@ def y(g, P):
     dxdy = (Rb[0] - R[0]) / (xh - bottom)
     yk = d * 0.40
     xk = R[0] - thin / 2 + dxdy * (xh - yk)
-    rb = S * 0.50 + 5
+    rb = rbf(P, 0.50)
     p = Path(R[0] - thin / 2, xh + 30)
     p.l(xk, yk)
     p.c(xk - W * 0.36, d - P.os + H * 0.55, d=180, w=1.0, a=S * 0.40, b=H * 0.55)
@@ -623,7 +629,7 @@ def z(g, P):
     g.add(beak(P, 0, xh, bt, xh * 0.20, S * 0.44, side="left", br=P.sfb * 0.9))
     g.add(beak(P, W, 0, bb, xh * 0.22, S * 0.46, side="right", vert="up", br=P.sfb * 0.9))
     anchors_lc(g, W / 2, P=P)
-    g.space(P.sb * 0.7, P.sb * 0.7)
+    g.space(P.sb * 0.9, P.sb * 0.9)
 
 
 # ------------------------------------------------------------- g
@@ -633,9 +639,9 @@ def g_(g, P):
     S, H, xh, d = P.stem, P.hair, P.xh, P.desc
     pl, pc = pens(P)
     W = o_width(P) * 0.94
-    pen_b = Pen(P.curve / 2 * 0.94, H / 2, P.ang)
+    pen_b = Pen(P.curve / 2 * (0.94 - 0.10 * P.wf), H / 2, P.ang)
     # bojo superior
-    bw = W * 0.74
+    bw = W * (0.74 + 0.03 * P.wf)
     bx0 = W * 0.03
     btop = xh + P.os
     bbot = xh * 0.22
@@ -662,4 +668,4 @@ def g_(g, P):
     k.c(W * 0.30, ly - pk.hv * 0.2, d=4, w=0.5)
     g.add(stk(k, pk))
     anchors_lc(g, cx, P=P)
-    g.space(P.sb * 0.9, P.sb * 0.5)
+    g.space(P.rnd * 0.85, P.rnd * 0.45)
