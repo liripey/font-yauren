@@ -496,7 +496,7 @@ def tshe(g, P, small, hook):
         g.add(rect(-S * 0.55, yb - t / 2, S + S * 0.85, yb + t / 2))
         return
     cap = P.cap
-    W = cn * 1.05 + S * 2.2
+    W = cn * 1.28 + S * 2.2
     tt = UC.arm_t(P, 1.0)
     xs = W * 0.30
     g.add(rect(xs, 0, xs + S, cap))
@@ -506,16 +506,14 @@ def tshe(g, P, small, hook):
     g.add(foot_serif(P, xs, xs + S, 0, caps=True))
     pl = Pen(S / 2, P.hairC / 2)
     xr = W - S
-    p = Path(xs + S - S * 0.3, cap * 0.50, d=62, w=0.3)
-    p.c(xs + S + (xr - xs - S) * 0.5, cap * 0.66 - pl.hv, d=0, w=1.0)
+    p = Path(xs + S - S * 0.3, cap * 0.44, d=62, w=0.3)
+    p.c(xs + S + (xr - xs - S) * 0.52, cap * 0.64 - pl.hv, d=0, w=1.0)
     p.c(xr + S / 2, cap * 0.40, d=270)
     if hook:
         rb = (S * 0.5 + 5) * (1 - 0.15 * P.wf)
-        p.l(xr + S / 2, -cap * 0.05)
-        p.c(xr - S * 0.3, -cap * 0.20 + pl.hv, d=180, w=1.0)
-        p.c(xr - S * 1.2, -cap * 0.20 + rb * 1.6, d=130, w=0.7)
         g.add(stk(p, pl))
-        g.add(ellipse(xr - S * 1.2 + rb * 0.35, -cap * 0.20 + rb * 1.15, rb, rb))
+        g.add(LC.hook_tail(P, xr + S / 2, cap * 0.40 + 1, -cap * 0.20, S * 1.35 + cn * 0.18,
+                           pl, rb))
     else:
         p.l(xr + S / 2, P.sftC)
         g.add(stk(p, pl))

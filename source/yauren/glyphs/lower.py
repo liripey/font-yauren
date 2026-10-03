@@ -461,14 +461,14 @@ def t(g, P):
 
 
 @glyph("f", 0x0066)
-def f(g, P, bar=True):
+def f(g, P, bar=True, reach=0.56, bar_to=None):
     S, H, xh = P.stem, P.hair, P.xh
     pl, _ = pens(P)
     x0 = S * 0.60
     top = P.asc + P.os * 0.5
     rb = rbf(P, 0.55)
     stem(g, P, x0, 0, xh, head=False, foot="both", er=P.sfx * 1.4)
-    hx = x0 + S + P.cn * 0.56
+    hx = x0 + S + P.cn * reach
     p = Path(x0 + S / 2, xh - 10, d=90)
     p.l(x0 + S / 2, P.asc - (P.asc - xh) * 0.50)
     p.c(x0 + S + P.cn * 0.20, top - pl.hv, d=0, w=1.0)
@@ -477,7 +477,7 @@ def f(g, P, bar=True):
     g.add(drop(P, hx - rb, top - rb * 1.08, rb))
     bt = H * 1.12
     if bar:
-        g.add(rect(0, xh - bt, x0 + S + P.cn * 0.40, xh))
+        g.add(rect(0, xh - bt, bar_to if bar_to is not None else x0 + S + P.cn * 0.40, xh))
     anchors_lc(g, x0 + S / 2, P=P)
     g.space(P.sb * 0.6, P.sb * 0.2)
 

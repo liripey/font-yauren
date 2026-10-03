@@ -34,9 +34,9 @@ Todas as verificações abaixo são reproduzíveis com `./build.sh` e as ferrame
 | maiúsculas | 680 | 680 | 680 | 680 | 680 | 680 | 680 |
 | ascendente / descendente | 740 / −235 | = | = | = | = | = | = |
 | overshoot o / O | ±12 / ±14 | = | = | = | = | = | = |
-| avanço n / o / H | 564/560/740 | 618/615/799 | 644/643/825 | 674/675/854 | 704/709/883 | 732/739/910 | 760/771/935 |
+| avanço n / o / H | 564/554/740 | 618/609/799 | 644/637/825 | 674/669/854 | 704/703/883 | 732/733/910 | 760/765/935 |
 | glifos / caracteres | 814 / 728 | = | = | = | = | = | = |
-| pares de kerning | 4774 | 4492 | 4374 | 4345 | 4323 | 4336 | 4319 |
+| pares de kerning | 4763 | 4453 | 4356 | 4339 | 4325 | 4320 | 4312 |
 
 Observações de controle:
 
@@ -78,6 +78,12 @@ visíveis) e em texto corrido nos pesos extremos. Itens identificados e corrigid
 | 17 | `Ta Te Tu Tr`, `Fé`, `Vá` frouxos: o bico do T impedia o encaixe | Distância mínima de kerning recalibrada; acentos continuam sem colisão |
 | 18 | Esporões dos terminais de `s S C G З` viravam "degraus" nos pesos pesados | Omitidos quando ficariam menores que 18 unidades |
 | 19 | `Ŋ` maiúsculo com cauda apertada (auto-sobreposição no Medium) | Cauda mais longa para proporções de maiúscula |
+| 20 | `§` eram dois "S" sobrepostos com centro embolado | Redesenhado: dois "s" entrelaçados (um girado 180°) formando um laço central limpo |
+| 21 | `fi` com gota do f flutuando sobre a serifa do i | fi clássico: o gancho do f se estende e a gota ocupa o lugar do pingo do i |
+| 22 | `ζ` e `ξ` com barra retangular "colada" no topo | Topo em traço fino contínuo que dobra para a curva principal |
+| 23 | `@` com junção confusa entre haste interna e anel | Haste do "a" interno continua, sem interrupção, no anel externo |
+| 24 | `Ђ` / `Ћ` com arco estrangulado junto à haste | Corpo mais largo, arco nascendo mais baixo; cauda com gota |
+| 25 | Redondas (o, c, e, d, b…) levemente frouxas no texto corrido | Espaçamento das redondas reduzido de 72% para 68% do lado reto |
 
 ---
 
@@ -100,8 +106,8 @@ visíveis) e em texto corrido nos pesos extremos. Itens identificados e corrigid
 1. **Kerning** é gerado automaticamente (perfis ópticos + distância mínima). Cobre os pares críticos de
    forma consistente; recomenda-se revisar com textos reais da Yauren e acrescentar exceções para
    pares de marca específicos.
-2. Glifos de desenho mais complexo — `§`, `ẞ`, `ξ`, `ζ`, `Ђ` — são funcionais e coerentes com a
-   família, mas mais simples que o restante; são os primeiros candidatos a um refinamento manual.
+2. `ẞ` (s agudo maiúsculo, de uso raro) segue o modelo geométrico alemão e é o glifo mais simples do
+   conjunto; é o próximo candidato a refinamento manual.
 3. **Sem itálicos**, conforme solicitado. Uma itálica verdadeira (não inclinada artificialmente) pode
    ser derivada do mesmo motor paramétrico no futuro.
 4. **Fonte variável** não foi gerada (pedido: OTF estáticos). Os 7 pesos cobrem o uso editorial.

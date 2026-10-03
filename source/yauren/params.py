@@ -74,7 +74,7 @@ class Params:
         # espaçamento base (a partir da ponta da serifa)
         self.sb = v["sb"]
         # lados redondos medem-se do extremo da curva; retos, da ponta da serifa
-        self.rnd = (self.sb + self.sfx) * 0.72
+        self.rnd = (self.sb + self.sfx) * 0.68
         self.sbC = self.sb * 1.4
         self.rndC = (self.sbC + self.sfxC) * 0.70
         # eixo de contraste (graus) para bojos

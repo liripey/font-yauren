@@ -39,16 +39,19 @@ for _n in CASE:
 
 @glyph("fi", 0xFB01)
 def fi(g, P):
-    f, _ = borrow("f", P)
-    i, _ = borrow("dotlessi", P)
+    """fi clássico: a gota do f passa a ser o pingo do i."""
+    from ..glyph import Glyph
     S = P.stem
-    fb = contours_bounds(f)
-    # barra do f se estende até a haste do i
-    xi = fb[2] - S * 0.15
-    g.add(f)
+    x0 = S * 0.60
+    xi = x0 + S + P.cn * 0.60          # haste do i: contraforma próxima à do n
+    rb = LC.rbf(P, 0.55)
+    reach = (xi + S / 2 + rb - x0 - S) / P.cn
+    t = Glyph("t")
+    LC.f(t, P, reach=reach, bar_to=xi + 2)
+    t.solve()
+    g.add(t.contours)
+    i, _ = borrow("dotlessi", P)
     g.add(transform_contours(i, dx=xi))
-    bt = P.hair * 1.12
-    g.add(rect(S * 0.6 + S, P.xh - bt, xi + S * 0.5, P.xh))
     LC.anchors_lc(g, xi + S / 2, P=P)
     g.space(P.sb * 0.6, P.sb)
 

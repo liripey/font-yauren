@@ -560,27 +560,25 @@ def numero(g, P):
 
 @glyph("section", 0x00A7)
 def section(g, P):
+    """§: dois "s" entrelaçados (um girado 180°) formando um laço central."""
     S, H, cap = P.stem, P.hair, P.cap
-    pen = Pen(P.curve / 2 * (0.84 - 0.18 * P.wf), H / 2, P.ang)
-    W = P.cn * 0.82 + P.curve * 1.15
-    top, bot = cap + P.os, -P.os - 110
+    pen = Pen(P.curve / 2 * (0.82 - 0.16 * P.wf), H / 2, P.ang)
+    W = P.cn * 0.80 + P.curve * 1.2
+    top, bot = cap + P.os, -P.os - 120
     hgt = top - bot
+    yc = (top + bot) / 2
     we = 0.6
-    # S superior
-    p = Path(W - pen.hh * we, top - hgt * 0.16, d=90, w=we)
+    r_loop = hgt * 0.17           # meia-altura do laço central
+    p = Path(W - pen.hh * we, top - hgt * 0.17, d=90, w=we)
     p.c(W * 0.50, top - pen.hv, d=180, w=1.0)
-    p.c(pen.hh, top - hgt * 0.17, d=270, w=1.0)
-    p.c(W * 0.50, top - hgt * 0.40, d=-14, w=1.1)
-    p.c(W - pen.hh, top - hgt * 0.60, d=270, w=1.0)
-    p.c(W * 0.62, bot + hgt * 0.36, d=200, w=0.5)
-    g.add(stk(p, pen))
-    q = Path(pen.hh * we, bot + hgt * 0.16, d=270, w=we)
-    q.c(W * 0.50, bot + pen.hv, d=0, w=1.0)
-    q.c(W - pen.hh, bot + hgt * 0.17, d=90, w=1.0)
-    q.c(W * 0.50, bot + hgt * 0.40, d=166, w=1.1)
-    q.c(pen.hh, bot + hgt * 0.60, d=90, w=1.0)
-    q.c(W * 0.38, top - hgt * 0.36, d=20, w=0.5)
-    g.add(stk(q, pen))
+    p.c(pen.hh, top - hgt * 0.15, d=270, w=0.95)
+    p.c(W * 0.52, yc + r_loop * 0.95, d=-20, w=1.05)
+    p.c(W - pen.hh, yc, d=270, w=1.0)
+    p.c(W * 0.50, yc - r_loop + pen.hv, d=180, w=0.95)
+    p.c(W * 0.12, yc - r_loop * 0.55, d=140, w=0.45)
+    upper = stk(p, pen)
+    g.add(upper)
+    g.add(transform_contours(upper, -1, 0, 0, -1, W, 2 * yc))
     g.space(P.sb * 1.1, P.sb * 1.1)
 
 
@@ -601,31 +599,29 @@ def paragraph(g, P):
 
 @glyph("at", 0x0040)
 def at(g, P):
+    """@: bojo interno de 'a' cuja haste continua, sem interrupção, no anel externo."""
     S, H, cap = P.stem, P.hair, P.cap
     R = cap * 0.56 + S * 0.15
     cx, cy = R, cap * 0.40
-    pen = Pen(P.curve * 0.30 * (1 - 0.30 * P.wf), H * 0.55, P.ang)
-    # anel externo aberto
-    p = Path(cx + R * 0.62, cy - R * 0.62, d=-30, w=0.8)
-    p.c(cx + R - pen.hh, cy + R * 0.05, d=90, w=1.0)
-    p.c(cx, cy + R - pen.hv, d=180, w=1.0)
-    p.c(cx - R + pen.hh, cy, d=270, w=1.0)
-    p.c(cx + R * 0.05, cy - R + pen.hv, d=0, w=1.0)
-    p.c(cx + R * 0.66, cy - R * 0.78, d=35, w=0.6)
-    g.add(stk(p, pen))
-    # 'a' interno (bojo + haste)
-    ri = R * 0.42
-    pi_ = Pen(P.curve * 0.36 * (1 - 0.25 * P.wf), H * 0.5, P.ang)
-    xi = cx - R * 0.04
-    q = Path(xi + ri - pi_.hh, cy + 6, d=90).c(xi, cy + ri - pi_.hv, d=180)
+    k = 1 - 0.28 * P.wf
+    ring_pen = Pen(P.curve * 0.30 * k, H * 0.55, P.ang)
+    ri = R * 0.40
+    pi_ = Pen(P.curve * 0.36 * k, H * 0.5, P.ang)
+    xi = cx - R * 0.10
+    q = Path(xi + ri - pi_.hh, cy, d=90).c(xi, cy + ri - pi_.hv, d=180)
     q.c(xi - ri + pi_.hh, cy, d=270).c(xi, cy - ri + pi_.hv, d=0).close("c")
     g.add(stk(q, pi_))
-    xs = xi + ri - S * 0.36
-    sp = Pen(S * 0.38 * (1 - 0.25 * P.wf), H * 0.5)
-    r = Path(xs + S * 0.36, cy + ri, d=270).l(xs + S * 0.36, cy - ri * 0.55)
-    r.c(xs + S * 0.36 + R * 0.25, cy - ri * 0.95, d=0, w=1.0)
-    r.c(cx + R * 0.66, cy - R * 0.05, d=80, w=0.7)
-    g.add(stk(r, sp))
+    xs = xi + ri - pi_.hh * 0.6            # eixo da haste
+    a_st = S * 0.38 * k
+    p = Path(xs, cy + ri + 4, d=270, a=a_st, b=H * 0.5)
+    p.l(xs, cy - ri * 0.45)
+    p.c(xs + R * 0.22, cy - ri * 0.98, d=0, a=ring_pen.A, b=ring_pen.B)
+    p.c(cx + R - ring_pen.hh, cy + R * 0.02, d=90)
+    p.c(cx, cy + R - ring_pen.hv, d=180)
+    p.c(cx - R + ring_pen.hh, cy, d=270)
+    p.c(cx + R * 0.02, cy - R + ring_pen.hv, d=0)
+    p.c(cx + R * 0.64, cy - R * 0.80, d=36, w=0.6)
+    g.add(stk(p, Pen(ring_pen.A, ring_pen.B, P.ang)))
     g.space(P.sb * 0.9, P.sb * 0.9)
 
 
