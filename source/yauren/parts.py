@@ -88,16 +88,28 @@ def foot_serif(P, xl, xr, y0=0, el=None, er=None, tip=None, br=None,
     def XR(h):
         return xr + sr * h
 
+    # colchete = filete cúbico inscrito no canto (ponta, quina, haste):
+    # nunca ultrapassa a aresta da haste nem o topo da serifa.
+    k = 0.60
+    rise = math.tan(math.radians(slope))
     p = Path(XL(0) - el, y0) if el > 0 else Path(XL(0), y0)
     if er > 0:
-        p.l(XR(0) + er, y0).l(XR(0) + er, y0 + tip, dout=180 - slope)
-        p.c(XR(tip + br), y0 + tip + br, d=math.degrees(math.atan2(1, sr)))
+        T = (XR(0) + er, y0 + tip)
+        E = (XR(tip + br), y0 + tip + br)
+        C = (XR(tip + er * rise * 0.5), y0 + tip + er * rise * 0.5)
+        p.l(XR(0) + er, y0).l(*T)
+        p.cc(T[0] + (C[0] - T[0]) * k, T[1] + (C[1] - T[1]) * k,
+             E[0] + (C[0] - E[0]) * k, E[1] + (C[1] - E[1]) * k, *E)
     else:
         p.l(XR(0), y0)
     p.l(XR(hgt), y0 + hgt).l(XL(hgt), y0 + hgt)
     if el > 0:
-        p.l(XL(tip + br), y0 + tip + br, dout=math.degrees(math.atan2(-1, -sl)))
-        p.c(XL(0) - el, y0 + tip, d=180 + slope)
+        E = (XL(tip + br), y0 + tip + br)
+        T = (XL(0) - el, y0 + tip)
+        C = (XL(tip + el * rise * 0.5), y0 + tip + el * rise * 0.5)
+        p.l(*E)
+        p.cc(E[0] + (C[0] - E[0]) * k, E[1] + (C[1] - E[1]) * k,
+             T[0] + (C[0] - T[0]) * k, T[1] + (C[1] - T[1]) * k, *T)
     c = p.fill()
     if flip:
         c = mirror_y(c, y0)

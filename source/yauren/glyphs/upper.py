@@ -441,8 +441,8 @@ def Y(g, P):
     a2 = quad((W - thin, cap), R, (Rb[0], yj - 40), (Rb[0] - thin, yj - 40))
     g.add(clip(a1 + a2, halfplane(L, Lb, "right"), halfplane(R, Rb, "left"),
                rect(-2000, -2000, 4000, yj - 30)))
-    sl = (Lb[0] - L[0]) / (cap - yj)
-    sr = (Rb[0] - R[0]) / (cap - yj)
+    sl = (Lb[0] - L[0]) / (cap - yj + 40)
+    sr = (Rb[0] - R[0]) / (cap - yj + 40)
     g.add(foot_serif(P, 0, thick, cap, el=P.sfxC, er=P.sfxC * 0.55, flip=True, sl=sl, sr=sl, caps=True))
     g.add(foot_serif(P, W - thin, W, cap, el=P.sfxC * 0.55, er=P.sfxC, flip=True, sl=sr, sr=sr, caps=True))
     anchors_uc(g, P, xc)

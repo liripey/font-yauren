@@ -16,11 +16,11 @@ def stk(path, pen, cap0="butt", cap1="butt"):
 
 def f_hook(m, dx=0.0, k=1.0):
     S, H = m.S, m.H
-    h = m.hu * (0.78 if m.case else 0.88) * k
-    w = h * 0.70
+    h = m.hu * (0.78 if m.case else 0.88) * k * (1 + 0.10 * m.P.wf)
+    w = h * (0.70 + 0.12 * m.P.wf)
     cx = m.cx + dx
     y0 = m.y0
-    pen = Pen(S * 0.30 + 3, H * 0.52)
+    pen = Pen((S * 0.30 + 3) * (1 - 0.35 * m.P.wf), H * 0.52)
     p = Path(cx - w * 0.42, y0 + h * 0.74, d=80, w=0.55)
     p.c(cx + w * 0.02, y0 + h - pen.hv, d=0, w=1.0)
     p.c(cx + w * 0.42, y0 + h * 0.66, d=270, w=1.0)
@@ -123,7 +123,7 @@ def horn_shape(P, x, y, size):
 
 @glyph("horncomb", 0x031B)
 def horncomb(g, P):
-    cx = MC(P)
+    cx = MC(P) + LC.o_width(P) * 0.40
     g.add(horn_shape(P, cx, P.xh * 0.86, P.xh * 0.30))
     g.space(width=0)
 

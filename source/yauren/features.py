@@ -49,6 +49,15 @@ def build_features(gl, P, kern=True):
         out.append("    sub i' @CombTop by dotlessi;")
         out.append("    sub j' @CombTop by dotlessj;")
         out.append("  } ccmp_dotless;")
+    combos = [n for n in names if "comb_" in n and not n.endswith(".case")]
+    if combos:
+        out.append("  lookup ccmp_viet {")
+        for c in sorted(combos):
+            a, b = c.split("_")
+            b = {"hookcomb": "hookabovecomb"}.get(b, b)
+            if a in names and b in names:
+                out.append(f"    sub {a} {b} by {c};")
+        out.append("  } ccmp_viet;")
     if "caroncomb.alt" in names:
         out.append("  lookup ccmp_caron {")
         out.append("    sub [d l L t] caroncomb' by caroncomb.alt;")
@@ -209,7 +218,11 @@ def mark_features(gl, P):
     bases = sorted(n for n, b in gl.items() if n not in is_mark and b.contours and n not in ("fi", "fl"))
     ligs = [n for n in ("fi", "fl") if n in gl]
     lines.append("table GDEF {")
-    marks_all = sorted(is_mark | ({"caroncomb.alt"} & set(gl)))
+    import unicodedata
+    mn = {n for n, b in gl.items() if b.unicodes and
+          unicodedata.category(chr(b.unicodes[0])) == "Mn"}
+    marks_all = sorted(is_mark | ({"caroncomb.alt"} & set(gl)) | mn |
+                       {n for n in gl if n.endswith("comb.case") or "comb_" in n})
     bases = [b for b in bases if b not in marks_all]
     lines.append(f"  GlyphClassDef [{' '.join(bases)}], [{' '.join(ligs)}], [{' '.join(marks_all)}], ;")
     for lg in ligs:

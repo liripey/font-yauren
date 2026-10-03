@@ -130,14 +130,14 @@ def f_dotbelow(m):
 
 
 def f_commabelow(m):
-    sc = 0.78
+    sc = 0.78 * (1 - 0.32 * m.P.wf)
     c = transform_contours(comma_shape(m.P), sc, 0, 0, sc, 0, 0)
     b = contours_bounds(c)
     return transform_contours(c, dx=m.cx - (b[0] + b[2]) / 2 + 6, dy=-62 - b[3]), None
 
 
 def f_commaabove(m):
-    sc = 0.78
+    sc = 0.78 * (1 - 0.32 * m.P.wf) * (0.85 if m.case else 1.0)
     c = transform_contours(comma_shape(m.P), -sc, 0, 0, -sc, 0, 0)
     b = contours_bounds(c)
     return transform_contours(c, dx=m.cx - (b[0] + b[2]) / 2, dy=m.y0 - b[1]), None
@@ -166,7 +166,7 @@ def f_ogonek(m):
 
 def f_caronalt(m):
     """Caron em forma de apóstrofo (ď ľ ť Ľ)."""
-    sc = 0.86
+    sc = 0.86 * (1 - 0.25 * m.P.wf)
     c = transform_contours(comma_shape(m.P), sc, 0, 0, sc, 0, 0)
     b = contours_bounds(c)
     return transform_contours(c, dx=m.cx - b[0] + 22 + m.S * 0.1, dy=(m.P.asc + 8) - b[3]), None

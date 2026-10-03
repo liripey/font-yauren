@@ -544,7 +544,7 @@ def tonos_shape(P, x, y0, case=False):
     return stroke(p, pen, "butt", "round")
 
 
-@glyph("tonoscomb")
+@glyph("tonoscomb", 0x0341)
 def tonoscomb(g, P):
     from .marks import MC
     cx = MC(P)
@@ -560,7 +560,7 @@ def tonos(g, P):
     g.space(P.sb * 1.6, P.sb * 1.6)
 
 
-@glyph("dieresistonoscomb")
+@glyph("dieresistonoscomb", 0x0344)
 def dieresistonoscomb(g, P):
     from .marks import MC, M, f_dieresis
     cx = MC(P)

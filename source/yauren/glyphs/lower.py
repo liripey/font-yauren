@@ -237,7 +237,7 @@ def j(g, P):
 def l(g, P):
     S = P.stem
     stem(g, P, 0, 0, P.asc)
-    anchors_lc(g, S / 2, top=P.asc, P=P)
+    anchors_lc(g, S / 2, top=P.asc - 60, P=P)
     g.anchor("center", S / 2, (P.asc - P.hdd) / 2)
     g.space(P.sb, P.sb)
 
