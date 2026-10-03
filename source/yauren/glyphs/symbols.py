@@ -277,10 +277,10 @@ def product(g, P):
 
 
 @glyph("summation", 0x2211)
-def summation(g, P):
+def summation(g, P, base=False):
     S, H, cap, cn = P.stemC, P.hairC, P.cap, P.cn
     W = cn * 1.22 + S
-    top, bot = cap, P.desc * 0.55
+    top, bot = (cap, 0) if base else (cap, P.desc * 0.55)
     tt, bt = UC.arm_t(P, 1.0), UC.arm_t(P, 1.12)
     from ..parts import beak
     g.add(rect(0, top - tt, W, top))

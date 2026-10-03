@@ -3,6 +3,7 @@ from collections import OrderedDict
 
 GLYPHS = OrderedDict()      # nome -> (unicodes, função)
 COMPOSITES = OrderedDict()  # nome -> (unicodes, base, [marcas], opções)
+ALIASES = {}                # cópia (grego/cirílico) -> glifo latino de mesmo desenho
 
 
 def glyph(name, *unicodes):

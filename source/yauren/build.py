@@ -16,7 +16,7 @@ FAMILY = "Yauren"
 VERSION = "1.000"
 VENDOR = "YAUR"
 GLYPH_MODULES = ["lower", "upper", "figures", "punct", "marks", "extra", "symbols", "alts",
-                 "composites"]
+                 "greek", "cyrillic", "composites"]
 
 
 def load_modules():

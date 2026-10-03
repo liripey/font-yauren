@@ -611,7 +611,7 @@ def k(g, P, short=False):
     jy = up0[1] + (up1[1] - up0[1]) * tj
     sl = (lx - thick - (jx - thick * 0.62)) / xh
     g.add(foot_serif(P, lx - thick, lx, 0, el=P.sfx * 0.55, er=P.sfx * 0.95, sl=-sl, sr=-sl))
-    anchors_lc(g, (S + W) / 2 - S * 0.3, top=P.asc, P=P, bottom_x=W / 2)
+    anchors_lc(g, (S + W) / 2 - S * 0.3, top=P.xh if short else P.asc, P=P, bottom_x=W / 2)
     g.space(P.sb, P.sb * 0.45)
 
 

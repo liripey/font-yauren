@@ -172,8 +172,13 @@ def compute_kerning(gl, P, k_area=0.62, thresh=12):
             if abs(kv) >= thresh:
                 pairs[(a, b)] = kv
 
+    from .registry import ALIASES
     fam = {b: [b] for b in bases}
+    for n, src in ALIASES.items():
+        if n in gl and src in fam:
+            fam[src].append(n)
     for n, (unis, base, marks, opts) in COMPOSITES.items():
+        base = ALIASES.get(base, base)
         root = {"dotlessi": "i", "dotlessj": "j"}.get(base, base)
         if n in gl and root in fam:
             fam[root].append(n)

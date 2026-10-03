@@ -450,7 +450,7 @@ def Y(g, P):
 
 
 @glyph("A", 0x0041)
-def A(g, P):
+def A(g, P, bar=True):
     S, H, cap = P.stemC, P.hairC, P.cap
     W = P.cn * 1.46 + S * 1.45
     thick, thin = S * 1.06, H * 1.3
@@ -469,7 +469,8 @@ def A(g, P):
     k1 = yb / top
     xl = Lb[0] + (Lt[0] - Lb[0]) * k1
     xr = Rb[0] + (Rt[0] - Rb[0]) * k1
-    g.add(rect(xl + thin * 0.5, yb - bt / 2, xr - thick * 0.5, yb + bt / 2))
+    if bar:
+        g.add(rect(xl + thin * 0.5, yb - bt / 2, xr - thick * 0.5, yb + bt / 2))
     sl = (Lt[0] - Lb[0]) / top
     sr = (Rt[0] - Rb[0]) / top
     g.add(foot_serif(P, 0, thin, 0, el=P.sfxC, er=P.sfxC * 0.6, sl=sl, sr=sl, caps=True))

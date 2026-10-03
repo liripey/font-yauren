@@ -58,7 +58,7 @@ def colon(g, P):
     g.space(P.sb * 1.6, P.sb * 1.6)
 
 
-@glyph("semicolon", 0x003B)
+@glyph("semicolon", 0x003B, 0x037E)
 def semicolon(g, P):
     r = rdot(P)
     g.add(comma_shape(P))
@@ -75,7 +75,7 @@ def ellipsis(g, P):
     g.space(P.sb * 1.5, P.sb * 1.5)
 
 
-@glyph("periodcentered", 0x00B7)
+@glyph("periodcentered", 0x00B7, 0x0387)
 def periodcentered(g, P):
     r = rdot(P) * 0.95
     g.add(dot(r, P.xh * 0.52, r))
