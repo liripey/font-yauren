@@ -216,11 +216,23 @@ def _collinear(a, b, c, tol=0.6):
     return abs(np.dot(b - a, n)) < tol and -0.01 < t < 1.01
 
 
-def cleanup_contour(c, min_len=1.0):
+def cleanup_contour(c, min_len=2.2):
     c = _split_extrema(c)
     c = _round_contour(c)
-    # curvas planas viram retas
-    c = [("l", s[1], s[4]) if s[0] == "c" and _is_flat_curve(s, 0.45) else s for s in c]
+    # curvas planas, microcurvas (< 4 u) e microcurvas com alças invertidas
+    # (pequenos "laços" em junções) viram retas
+    def _micro(s):
+        if s[0] != "c":
+            return False
+        p0, c1, c2, p3 = s[1], s[2], s[3], s[4]
+        ch = p3 - p0
+        L = float(np.linalg.norm(ch))
+        if L < 4:
+            return True
+        back = float(np.dot(c1 - p0, ch)) < 0 or float(np.dot(p3 - c2, ch)) < 0
+        return back and L < 14
+    c = [("l", s[1], s[4]) if s[0] == "c" and (_is_flat_curve(s, 0.45) or _micro(s)) else s
+         for s in c]
     # remove segmentos minúsculos (funde pontos)
     changed = True
     while changed and len(c) > 2:
@@ -249,6 +261,17 @@ def cleanup_contour(c, min_len=1.0):
                 del c[j]
                 changed = True
                 break
+    # retas "quase" horizontais/verticais (desvio de 1 unidade) ficam exatas
+    for i in range(len(c)):
+        sg = c[i]
+        if sg[0] != "l":
+            continue
+        p0, p1 = sg[1], sg[2]
+        dx, dy = abs(p1[0] - p0[0]), abs(p1[1] - p0[1])
+        if 0 < dy <= 1 and dx > 20:
+            c[i] = ("l", p0, np.array([p1[0], p0[1]]))
+        elif 0 < dx <= 1 and dy > 20:
+            c[i] = ("l", p0, np.array([p0[0], p1[1]]))
     # garante continuidade exata
     for i in range(len(c)):
         nxt = c[(i + 1) % len(c)]
@@ -285,6 +308,28 @@ def _harmonize(c, tol_deg=4.0):
                 hout[other] = node[other]
                 a[3] = hin
                 b[2] = hout
+    # alças isoladas quase alinhadas junto a cantos ou a retas do mesmo eixo
+    for i in range(n):
+        a = out[i]
+        b = out[(i + 1) % n]
+        node = a[-1]
+        tin = (node - a[3]) if a[0] == "c" else (node - a[1])
+        tout = (b[2] - node) if b[0] == "c" else (b[2] - node)
+        if np.linalg.norm(tin) < 1 or np.linalg.norm(tout) < 1:
+            continue
+        cosang = float(np.dot(tin, tout) / (np.linalg.norm(tin) * np.linalg.norm(tout)))
+        corner = cosang < math.cos(math.radians(10))
+        for seg, hidx, vec in ((a, 3, tin), (b, 2, tout)):
+            if seg[0] != "c":
+                continue
+            other_line = (b if seg is a else a)[0] == "l"
+            for axis in (0, 1):
+                o = 1 - axis
+                ang = math.degrees(math.atan2(abs(vec[o]), abs(vec[axis]) + 1e-9))
+                if 0 < ang < 3.0 and (corner or other_line):
+                    h = seg[hidx].copy()
+                    h[o] = node[o]
+                    seg[hidx] = h
     return [tuple(s) for s in out]
 
 
@@ -308,7 +353,8 @@ def _cleanup_once(contours):
 
 def cleanup(contours):
     """Limpa, arredonda e re-simplifica até estabilizar (o arredondamento
-    pode criar microsobreposições)."""
+    pode criar microsobreposições). Contornos em ordem canônica: de cima
+    para baixo, da esquerda para a direita."""
     out = _cleanup_once(contours)
     for _ in range(2):
         p = contours_to_skpath(out)
@@ -317,7 +363,11 @@ def cleanup(contours):
         if _same(again, out):
             break
         out = again
-    return out
+
+    def key(c):
+        b = contours_bounds([c])
+        return (-round(b[3]), round(b[0]))
+    return sorted(out, key=key)
 
 
 def _same(a, b):

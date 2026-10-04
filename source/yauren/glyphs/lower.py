@@ -168,7 +168,7 @@ def r(g, P):
     p.c(S + P.cn * 0.26, top - pl.hv, d=0, w=1.0)
     p.c(ex - rb * 0.9, top - pl.hv * 1.4, d=-12, w=1.0)
     g.add(stk(p, pl))
-    g.add(drop(P, ex - rb, top - rb * 1.05, rb))
+    g.add(drop(P, ex - rb, top - rb * 1.04, rb))
     anchors_lc(g, S * 0.9, P=P, bottom_x=S / 2)
     g.space(P.sb, P.sb * 0.6)
 
@@ -306,7 +306,7 @@ def e(g, P):
     bot = -P.os
     bar_t = H * 1.05
     yb = xh * 0.56
-    g.add(rect(pc.hh, yb - bar_t / 2, W - 1, yb + bar_t / 2))
+    g.add(rect(pc.hh, yb - bar_t / 2, W, yb + bar_t / 2))
     p = Path(W - pc.hh * 0.88, yb - bar_t / 2, d=90, w=0.88)
     p.c(W * 0.50, top - pc.hv, d=180, w=1.0, t=t)
     p.c(pc.hh, xh * 0.48, d=270, t=t)
@@ -520,7 +520,7 @@ def vee(g, P, x0, W, top, bottom, thick, thin, flat, serif_l=True, serif_r=True,
 def v(g, P):
     S, H, xh = P.stem, P.hair, P.xh
     W = P.cn * 1.0 + S * 1.6
-    xa = vee(g, P, 0, W, xh, -P.os * 0.7, S * 1.04, H * 1.25, H * 0.7)
+    xa = vee(g, P, 0, W, xh, -P.os, S * 1.04, H * 1.25, H * 0.7)
     anchors_lc(g, xa, P=P)
     g.space(P.sb * 0.45, P.sb * 0.45)
 
@@ -531,7 +531,7 @@ def w(g, P):
     W = P.cn * 0.80 + S * 1.30
     thick, thin = S * 0.98, H * 1.2
     flat = H * 0.6
-    bottom = -P.os * 0.7
+    bottom = -P.os
     xa1 = vee(g, P, 0, W, xh, bottom, thick, thin, flat, serif_r=False)
     off = W - thin * 0.5 - S * 0.62
     xa2 = vee(g, P, off, W, xh, bottom, thick, thin, flat, serif_l=False)

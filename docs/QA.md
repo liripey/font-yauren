@@ -25,24 +25,24 @@ Todas as verificações abaixo são reproduzíveis com `./build.sh` e as ferrame
 
 | Medida | Light | Regular | Medium | SemiBold | Bold | ExtraBold | Black |
 |---|---|---|---|---|---|---|---|
-| haste n | 58 | 84 | 100 | 119 | 139 | 160 | 182 |
-| haste H | 65 | 94 | 111 | 132 | 154 | 176 | 200 |
-| fino o (topo) | 28 | 37 | 43 | 49 | 56 | 63 | 71 |
-| curva o (lado) | 62 | 89 | 106 | 126 | 147 | 170 | 193 |
-| contraste (fino/grosso) | 0.45 | 0.42 | 0.41 | 0.39 | 0.38 | 0.37 | 0.37 |
+| haste n | 58 | 84 | 100 | 120 | 140 | 160 | 182 |
+| haste H | 66 | 94 | 112 | 132 | 154 | 176 | 200 |
+| fino o (topo) | 28 | 36 | 40 | 44 | 50 | 56 | 62 |
+| curva o (lado) | 62 | 90 | 108 | 128 | 150 | 172 | 194 |
+| contraste (fino/grosso) | 0.45 | 0.40 | 0.37 | 0.34 | 0.33 | 0.33 | 0.32 |
 | altura-x | 500 | 500 | 500 | 500 | 500 | 500 | 500 |
 | maiúsculas | 680 | 680 | 680 | 680 | 680 | 680 | 680 |
 | ascendente / descendente | 740 / −235 | = | = | = | = | = | = |
 | overshoot o / O | ±12 / ±14 | = | = | = | = | = | = |
-| avanço n / o / H | 564/554/740 | 618/609/799 | 644/637/825 | 674/669/854 | 704/703/883 | 732/733/910 | 760/765/935 |
+| avanço n / o / H | 564/554/742 | 618/610/800 | 644/639/827 | 676/671/854 | 706/706/883 | 732/735/909 | 760/764/934 |
 | glifos / caracteres | 814 / 728 | = | = | = | = | = | = |
-| pares de kerning | 4763 | 4453 | 4356 | 4339 | 4325 | 4320 | 4312 |
+| pares de kerning | 4777 | 4460 | 4346 | 4307 | 4374 | 4294 | 4324 |
 
 Observações de controle:
 
 * **Progressão de peso** regular: hastes crescem ≈ 16–22 unidades por passo; maiúsculas 9% mais pesadas
   que minúsculas (compensação óptica); curvas 7% mais pesadas que hastes retas (compensação de redondas).
-* **Contraste** diminui suavemente nos pesos pesados (0,45 → 0,37), como em famílias de texto
+* **Contraste** diminui suavemente nos pesos pesados (0,45 → 0,32), como em famílias de texto
   profissionais — evita que os finos desapareçam no Light e que o Black fique "manchado".
 * **Overshoots** de 12/14 unidades (2,4% da altura-x) — redondas e pontas parecem do mesmo tamanho que
   as retas em todos os pesos.
@@ -84,10 +84,27 @@ visíveis) e em texto corrido nos pesos extremos. Itens identificados e corrigid
 | 23 | `@` com junção confusa entre haste interna e anel | Haste do "a" interno continua, sem interrupção, no anel externo |
 | 24 | `Ђ` / `Ћ` com arco estrangulado junto à haste | Corpo mais largo, arco nascendo mais baixo; cauda com gota |
 | 25 | Redondas (o, c, e, d, b…) levemente frouxas no texto corrido | Espaçamento das redondas reduzido de 72% para 68% do lado reto |
+| 26 | Eixo de contraste inclinado (8°) deixava O, o, 0, 8, Θ visivelmente assimétricos e entortava os cortes dos terminais (c, e, s, a…) | Eixo vertical: formas redondas espelhadas e cortes retos |
+| 27 | Em alguns traços a curva passava além do ponto que devia ser o extremo (ex.: "corcunda" de 2 u no topo do `c`) | Motor corrigido: todo nó horizontal/vertical é extremo verdadeiro |
+| 28 | Dimensões fracionárias geravam diferenças de 1 u entre lados de H, I, T e sinais matemáticos | Hastes, finos e contraformas inteiros e pares; largura tabular par |
+| 29 | Serifas com desnível de 1 u na ponta; cunha e bicos com inclinações de 2–4° "quase retas" | Pontas planas e bicos com aresta exatamente vertical |
+| 30 | Ápices e vértices (A V W v w M N Δ) fora das zonas de overshoot | Alinhados exatamente a −12/−14 e 694 |
+| 31 | Pequenos desníveis: barra do e (1 u), gota do r (1 u), base do 7, junção do 2, perna do Д e Л, rabichos cirílicos tortos, cortes inclinados em α υ ψ ω, ganchos do ả e ʔ | Corrigidos individualmente |
+| 32 | Microcurvas de 2–3 u com alças invertidas em junções (interior do U Black, gancho do ¿) | Eliminadas na etapa de acabamento; ordem de contornos padronizada |
 
 ---
 
-## 4. Legibilidade — checklist
+## 4. Auditoria de simetria e retidão (`tools/audit.py`)
+
+* **Retidão**: segmentos e alças que deveriam ser exatamente horizontais/verticais — de 1680
+  ocorrências (Regular) para ≈ 20 desvios de 1–2 u em alças de curvas ajustadas, invisíveis.
+* **Simetria** (glifo × seu espelho): O, o, 0, 8, H, I, T, Θ, Φ, Ω, Π, Ш, Ж, pontuação, sinais
+  matemáticos e acentos (circunflexo, caron, breve, trema, mácron, anel, ponto) são **espelhados com
+  exatidão**, com laterais iguais. As únicas assimetrias são as **propositais** do desenho com
+  serifas: diagonais grossa/fina (A V W X Y M v w x И), serifa de cabeça em cunha (i l n u) e a
+  barra do ≠.
+
+## 5. Legibilidade — checklist
 
 * [x] Altura-x 50% do eme (Georgia ≈ 48%, Garamond ≈ 40%)
 * [x] Aberturas de `a c e s` amplas; `e` com olho grande e barra horizontal
@@ -101,7 +118,7 @@ visíveis) e em texto corrido nos pesos extremos. Itens identificados e corrigid
 
 ---
 
-## 5. Limitações conhecidas e recomendações
+## 6. Limitações conhecidas e recomendações
 
 1. **Kerning** é gerado automaticamente (perfis ópticos + distância mínima). Cobre os pares críticos de
    forma consistente; recomenda-se revisar com textos reais da Yauren e acrescentar exceções para
@@ -118,7 +135,7 @@ visíveis) e em texto corrido nos pesos extremos. Itens identificados e corrigid
 
 ---
 
-## 6. Como reproduzir as verificações
+## 7. Como reproduzir as verificações
 
 ```bash
 ./build.sh                                             # gera fontes, espécimes e métricas
@@ -126,5 +143,6 @@ fontbakery check-universal fonts/otf/*.otf             # conformidade
 checkoutlinesufo fonts/otf/Yauren-Regular.otf --all    # contornos (use uma cópia: a ferramenta corrige)
 hyperglot fonts/otf/Yauren-Regular.otf                 # idiomas
 python3 tools/qa_report.py                             # medições por peso
+python3 tools/audit.py fonts/otf/Yauren-Regular.otf --sym    # retidão, alinhamento e simetria
 python3 tools/charset.py fonts/otf/Yauren-Black.otf quadro.png   # quadro de glifos
 ```

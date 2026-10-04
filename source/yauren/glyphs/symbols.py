@@ -71,7 +71,7 @@ def minus(g, P, cx, ya, a, t):
 
 @math_glyph("multiply", 0x00D7)
 def multiply(g, P, cx, ya, a, t):
-    d = a * 0.74
+    d = round(a * 0.74)
     pen = mpen(P)
     g.add(stk(Path(cx - d, ya - d).l(cx + d, ya + d), pen))
     g.add(stk(Path(cx - d, ya + d).l(cx + d, ya - d), pen))
@@ -252,7 +252,7 @@ def increment(g, P):
     S, H, cap = P.stemC, P.hairC, P.cap
     W = P.cn * 1.40 + S * 1.2
     thin, thick = H * 1.25, S * 0.92
-    top = cap + P.osC * 0.6
+    top = cap + P.osC
     xa = W / 2
     bt = UC.arm_t(P, 1.2)
     arms = (quad((0, 0), (thin, 0), (xa + thin / 2, top), (xa - thin / 2, top)) +

@@ -91,7 +91,7 @@ def foot_serif(P, xl, xr, y0=0, el=None, er=None, tip=None, br=None,
     # colchete = filete cúbico inscrito no canto (ponta, quina, haste):
     # nunca ultrapassa a aresta da haste nem o topo da serifa.
     k = 0.60
-    rise = math.tan(math.radians(slope))
+    rise = 0.0  # topo da serifa plano na ponta (alças exatamente horizontais)
     p = Path(XL(0) - el, y0) if el > 0 else Path(XL(0), y0)
     if er > 0:
         T = (XR(0) + er, y0 + tip)
@@ -126,7 +126,7 @@ def head_serif(P, xl, xr, top, ext=None, drop=None, tipf=0.55, br=None):
     tx = xl - ext
     p = Path(xr, top)
     p.l(tx, top - drop)
-    p.l(tx, top - drop - tip, dout=-4)
+    p.l(tx, top - drop - tip, dout=0)
     p.c(xl, top - drop - tip - br, d=270)
     p.l(xl, top - drop - tip - br - 40)
     p.l(xr, top - drop - tip - br - 40)
@@ -150,7 +150,7 @@ def beak(P, x, y, t, L, w, side="left", vert="down", br=None, taper=0.55):
     yb = y - t           # face interna do braço
     p = Path(x, y)
     p.l(x, yb - L)
-    p.l(x + w * taper, yb - L + 2, dout=88)
+    p.l(x + w * taper, yb - L, dout=90)
     p.c(x + w + br, yb, d=0, t=1.1)
     p.l(x + w + br + 40, yb)
     p.l(x + w + br + 40, y)

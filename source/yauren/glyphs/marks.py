@@ -325,7 +325,7 @@ def glottalstop(g, P):
     S, H, cap = P.stem, P.hair, P.cap
     pl = Pen(S / 2, H / 2)
     W = P.cn * 0.80 + S * 1.1
-    p = Path(S * 0.45, cap * 0.80, d=80, w=0.75)
+    p = Path(S * 0.45, cap * 0.78, d=90, w=0.75)
     p.c(W * 0.50, cap + P.os - pl.hv, d=0, w=1.0)
     p.c(W - pl.hh, cap * 0.74, d=270, w=1.0)
     p.c(W * 0.52, cap * 0.45, d=225, w=0.95)

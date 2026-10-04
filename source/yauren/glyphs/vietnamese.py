@@ -21,7 +21,7 @@ def f_hook(m, dx=0.0, k=1.0):
     cx = m.cx + dx
     y0 = m.y0
     pen = Pen((S * 0.30 + 3) * (1 - 0.35 * m.P.wf), H * 0.52)
-    p = Path(cx - w * 0.42, y0 + h * 0.74, d=80, w=0.55)
+    p = Path(cx - w * 0.42, y0 + h * 0.70, d=90, w=0.55)
     p.c(cx + w * 0.02, y0 + h - pen.hv, d=0, w=1.0)
     p.c(cx + w * 0.42, y0 + h * 0.66, d=270, w=1.0)
     p.c(cx + w * 0.02, y0 + h * 0.36, d=225, w=0.7)

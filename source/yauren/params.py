@@ -54,21 +54,24 @@ class Params:
         self.os = 12          # overshoot minúsculas
         self.osC = 14         # overshoot maiúsculas
         # hastes
-        self.stem = v["stem"]
-        self.hair = v["hair"]
-        self.stemC = v["stem"] * 1.09 + 2
-        self.hairC = v["hair"] * 1.06
-        self.curve = self.stem * 1.07     # espessura máxima das curvas
-        self.curveC = self.stemC * 1.07
+        # dimensões inteiras (hastes pares) => desenhos simétricos após o
+        # arredondamento das coordenadas
+        ev = lambda x: 2 * round(x / 2)  # noqa: E731
+        self.stem = ev(v["stem"])
+        self.hair = ev(v["hair"])
+        self.stemC = ev(v["stem"] * 1.09 + 2)
+        self.hairC = ev(v["hair"] * 1.06)
+        self.curve = ev(self.stem * 1.07)     # espessura máxima das curvas
+        self.curveC = ev(self.stemC * 1.07)
         # contra-forma do n (largura entre hastes)
-        self.cn = v["cn"]
+        self.cn = ev(v["cn"])
         # serifas
-        self.sfx = v["sfx"]          # extensão da serifa de pé (minúsc.)
-        self.sft = v["sft"]          # espessura na ponta
-        self.sfb = v["sfb"]          # altura do colchete (bracket)
-        self.sfxC = v["sfx"] * 1.22  # maiúsculas
-        self.sftC = v["sft"] * 1.05
-        self.sfbC = v["sfb"] * 1.1
+        self.sfx = round(v["sfx"])          # extensão da serifa de pé (minúsc.)
+        self.sft = round(v["sft"])          # espessura na ponta
+        self.sfb = round(v["sfb"])          # altura do colchete (bracket)
+        self.sfxC = round(v["sfx"] * 1.22)  # maiúsculas
+        self.sftC = round(v["sft"] * 1.05)
+        self.sfbC = round(v["sfb"] * 1.1)
         self.hdx = v["hdx"]          # serifa de cabeça (cunha)
         self.hdd = v["hdd"]          # queda da cunha
         # espaçamento base (a partir da ponta da serifa)
@@ -77,8 +80,9 @@ class Params:
         self.rnd = (self.sb + self.sfx) * 0.68
         self.sbC = self.sb * 1.4
         self.rndC = (self.sbC + self.sfxC) * 0.70
-        # eixo de contraste (graus) para bojos
-        self.ang = 8.0
+        # eixo de contraste (graus) para bojos: vertical, para formas redondas
+        # simétricas e cortes de terminais retos
+        self.ang = 0.0
         # escala horizontal (para variantes reduzidas)
         self.u = 1.0
 

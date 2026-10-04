@@ -387,7 +387,7 @@ def vee(g, P, x0, W, top, bottom, thick, thin, flat, serif_l=True, serif_r=True,
 def V(g, P):
     S, H, cap = P.stemC, P.hairC, P.cap
     W = P.cn * 1.40 + S * 1.5
-    xa = vee(g, P, 0, W, cap, -P.osC * 0.8, S * 1.06, H * 1.3, H * 0.6)
+    xa = vee(g, P, 0, W, cap, -P.osC, S * 1.06, H * 1.3, H * 0.6)
     anchors_uc(g, P, xa)
     g.space(P.sbC * 0.3, P.sbC * 0.3)
 
@@ -397,7 +397,7 @@ def W_(g, P):
     S, H, cap = P.stemC, P.hairC, P.cap
     W = P.cn * 1.08 + S * 1.3
     thick, thin = S * 1.02, H * 1.25
-    bottom = -P.osC * 0.8
+    bottom = -P.osC
     xa1 = vee(g, P, 0, W, cap, bottom, thick, thin, H * 0.5, serif_r=False)
     off = W - thin * 0.5 - S * 0.66
     xa2 = vee(g, P, off, W, cap, bottom, thick, thin, H * 0.5, serif_l=False)
@@ -453,7 +453,7 @@ def A(g, P, bar=True):
     S, H, cap = P.stemC, P.hairC, P.cap
     W = P.cn * 1.46 + S * 1.45
     thick, thin = S * 1.06, H * 1.3
-    top = cap + P.osC * 0.9
+    top = cap + P.osC
     flat = H * 0.5
     xa = W * 0.5
     Lt, Rt = (xa - flat / 2, top), (xa + flat / 2, top)
@@ -518,9 +518,9 @@ def N(g, P):
     g.add(rect(0, 0, thin, cap))
     g.add(rect(W - thin, 0, W, cap))
     # diagonal grossa
-    diag = quad((0, cap), (S * 1.12, cap), (W, -P.osC * 0.6), (W - S * 1.12, -P.osC * 0.6))
+    diag = quad((0, cap), (S * 1.12, cap), (W, -P.osC), (W - S * 1.12, -P.osC))
     g.add(clip(diag, rect(-1000, -2000, 0, 2000), rect(W, -2000, 3000, 2000),
-               rect(-1000, -2000, 3000, -P.osC * 0.6)))
+               rect(-1000, -2000, 3000, -P.osC)))
     g.add(foot_serif(P, 0, thin, 0, caps=True))
     g.add(foot_serif(P, 0, thin, cap, el=P.sfxC, er=0, caps=True, flip=True))
     g.add(foot_serif(P, W - thin, W, cap, caps=True, flip=True))
@@ -537,7 +537,7 @@ def M(g, P):
     # hastes externas (esq. fina, dir. grossa)
     g.add(rect(0, 0, thin, cap))
     g.add(rect(W - S, 0, W, cap))
-    vb = -P.osC * 0.6
+    vb = -P.osC
     d1 = quad((0, cap), (S * 1.1, cap), (xv + S * 0.45, vb), (xv - S * 0.65, vb))
     d2 = quad((W - S * 0.5 - thin, cap), (W - S * 0.5, cap), (xv + S * 0.45, vb), (xv + S * 0.45 - thin, vb))
     g.add(clip(d1 + d2, rect(-1000, -2000, 0, 2000), rect(-1000, -2000, 3000, vb)))

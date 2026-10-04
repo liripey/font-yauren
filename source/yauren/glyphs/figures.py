@@ -33,7 +33,7 @@ class F:
 
 
 def tab_width(P):
-    return round(P.cn * 1.30 + 2 * P.stem)
+    return 2 * round((P.cn * 1.30 + 2 * P.stem) / 2)
 
 
 def drop(f, cx, cy, r=None):
@@ -77,8 +77,9 @@ def d_two(g, f):
     p.c(bw * 0.50, top - pc.hv, d=0, w=1.0)
     p.c(bw - pc.hh, f.Y(0.70), d=270, w=1.0)
     p.c(bw * 0.42, f.Y(0.30), d=228, w=1.02)
-    p.c(S * 0.42, f.y0 + bt - 2, d=238, w=1.0)
-    g.add(stk(p, pc))
+    p.c(S * 0.42, f.y0 + bt * 0.45, d=238, w=1.0)
+    from ..glyph import clip
+    g.add(clip(stk(p, pc), rect(-1000, f.y0 - 600, 3000, f.y0)))
     g.add(drop(f, f.rb + 4, f.Y(0.78)))
     g.add(rect(0, f.y0, bw, f.y0 + bt))
     g.add(beak(f.P, bw, f.y0, bt, f.FH * 0.11, S * 0.42, side="right", vert="up"))
@@ -160,7 +161,7 @@ def d_seven(g, f):
     g.add(beak(P, 0, f.Y(1), bt, f.FH * 0.11, S * 0.40, side="left"))
     p = Path(bw - S * 0.32, f.Y(1) - bt * 0.5, d=245, w=0.7)
     p.c(bw * 0.52, f.Y(0.45), d=250, w=1.0)
-    p.c(bw * 0.40, f.y0, d=264, w=1.04)
+    p.c(bw * 0.40, f.y0, d=270, w=1.04)
     g.add(stk(p, f.pl))
     return bw
 

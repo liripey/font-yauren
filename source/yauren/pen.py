@@ -136,6 +136,7 @@ class Path:
                         v = p1 - p0
                         a1 = math.atan2(v[1], v[0])
                 c1, c2 = hobby_controls(p0, a0, p1, a1, s.t0, s.t1)
+                c1, c2 = _clamp_extrema(p0, c1, c2, p1, a0, a1)
                 s.bez = np.array([p0, c1, c2, p1])
         return self
 
@@ -152,6 +153,22 @@ class Path:
             else:
                 segs.append(("c",) + tuple(s.bez))
         return [segs]
+
+
+def _clamp_extrema(p0, c1, c2, p1, a0, a1, tol=1e-6):
+    """Nós com tangente horizontal/vertical são extremos verdadeiros: as
+    alças não podem ultrapassar a coordenada do nó (evita "corcundas")."""
+    c1 = c1.copy()
+    c2 = c2.copy()
+    for axis, trig in ((1, math.sin), (0, math.cos)):
+        # tangente paralela ao outro eixo => extremo neste eixo
+        if abs(trig(a1)) < tol:
+            lo, hi = sorted((p0[axis], p1[axis]))
+            c1[axis] = min(max(c1[axis], lo), hi)
+        if abs(trig(a0)) < tol:
+            lo, hi = sorted((p0[axis], p1[axis]))
+            c2[axis] = min(max(c2[axis], lo), hi)
+    return c1, c2
 
 
 # ------------------------------------------------------------------ pena

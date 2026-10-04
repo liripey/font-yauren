@@ -32,8 +32,8 @@ famílias separadas ("Yauren Light", "Yauren Black"…) em aplicativos antigos.
 
 | Referência | O que a Yauren herdou |
 |---|---|
-| **Garamond** | Proporções clássicas, serifas de cabeça em cunha, eixo de contraste levemente inclinado (8°), terminais em gota, `a` e `g` de dois andares, cauda longa do `Q`. |
-| **Georgia** | Robustez para tela: altura-x grande, traços finos que não desaparecem (contraste moderado ≈ 0,42), serifas com colchete firme, terminais em bola, algarismos sólidos. |
+| **Garamond** | Proporções clássicas, serifas de cabeça em cunha, terminais em gota, `a` e `g` de dois andares, cauda longa do `Q`. |
+| **Georgia** | Robustez para tela: altura-x grande, eixo de contraste vertical (formas redondas simétricas e estáveis), traços finos que não desaparecem (contraste moderado ≈ 0,40), serifas com colchete firme, terminais em bola, algarismos sólidos. |
 | **Lexend Deca** | Clareza e conforto: formas mais largas, aberturas amplas (`c e s a`), espaçamento generoso, desenho sem ambiguidades. |
 
 Traços próprios da Yauren: serifas de pé com colchete em filete contínuo, pequenas serifas verticais

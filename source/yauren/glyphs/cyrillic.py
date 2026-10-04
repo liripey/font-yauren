@@ -49,10 +49,16 @@ def tail_depth(P):
     return (P.desc * 0.62) if is_small(P) else (-P.cap * 0.17)
 
 
-def desc_tab(g, P, x0, x1):
-    """Rabicho descendente (Д Ц Щ Џ)."""
+def desc_tab(g, P, x0, x1, side="right"):
+    """Rabicho descendente (Д Ц Щ Џ): aresta externa vertical, interna afilada."""
     y = tail_depth(P)
-    g.add(quad((x0, 1), (x1, 1), (x1 - (x1 - x0) * 0.12, y), (x0 + (x1 - x0) * 0.08, y)))
+    w = x1 - x0
+    if side == "right":
+        g.add(quad((x0, 1), (x1, 1), (x1, y), (x0 + w * 0.32, y)))
+    elif side == "left":
+        g.add(quad((x0, 1), (x1, 1), (x1 - w * 0.32, y), (x0, y)))
+    else:
+        g.add(quad((x0, 1), (x1, 1), (x1 - w * 0.16, y), (x0 + w * 0.16, y)))
 
 
 # ------------------------------------------------------------- cópias
@@ -119,14 +125,14 @@ def De(g, P):
     g.add(rect(xr - S, 0, xr, cap))
     g.add(rect(W * 0.20, cap - tt, xr, cap))
     pl = Pen(S * 0.42, H / 2)
-    p = Path(W * 0.20 + S * 0.42, cap - tt * 0.5, d=262, w=1.0)
+    p = Path(W * 0.20 + S * 0.42, cap - tt * 0.5, d=270, w=1.0)
     p.c(W * 0.12, bt + cap * 0.10, d=240, w=0.9)
     p.c(S * 0.2, bt * 0.6, d=225, w=0.7)
     g.add(stk(p, pl))
     g.add(rect(0, 0, W, bt))
     g.add(foot_serif(P, W * 0.20, W * 0.20 + S * 0.84, cap, el=P.sfxC, er=0, caps=True, flip=True))
     g.add(foot_serif(P, xr - S, xr, cap, el=0, er=P.sfxC * 0.9, caps=True, flip=True))
-    desc_tab(g, P, 0, S * 0.42)
+    desc_tab(g, P, 0, S * 0.42, side="left")
     desc_tab(g, P, W - S * 0.42, W)
     UC.anchors_uc(g, P, W / 2)
     g.space(P.sbC * 0.6, P.sbC * 0.6)
@@ -228,7 +234,7 @@ def El(g, P):
     g.add(foot_serif(P, xl, xl + S * 0.85, cap, el=P.sfxC, er=0, caps=True, flip=True))
     pl = Pen(S * 0.44, H / 2)
     rb = (S * 0.42 + 5) * (1 - 0.15 * P.wf)
-    p = Path(xl + S * 0.44, cap - tt * 0.6, d=268, w=1.0)
+    p = Path(xl + S * 0.44, cap - tt * 0.6, d=270, w=1.0)
     p.c(xl * 0.62, cap * 0.22, d=245, w=0.9)
     p.c(rb * 1.4, rb * 0.9, d=210, w=0.6)
     g.add(stk(p, pl))
@@ -420,7 +426,7 @@ def Dzhe(g, P):
     UC.serifs(g, P, 0, S, bottom=False)
     UC.serifs(g, P, W - S, W, bottom=False)
     g.add(rect(0, 0, W, bt))
-    desc_tab(g, P, W / 2 - S * 0.25, W / 2 + S * 0.25)
+    desc_tab(g, P, W / 2 - S * 0.25, W / 2 + S * 0.25, side="center")
     UC.anchors_uc(g, P, W / 2)
     g.space(P.sbC, P.sbC)
 
